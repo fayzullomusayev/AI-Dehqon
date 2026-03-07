@@ -1,773 +1,314 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>AI Dehqon | AgroOS</title>
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
-}
-
-body{
-min-height:100vh;
-display:grid;
-place-items:center;
-background:#0b0f14;
-color:white;
-overflow:hidden;
-}
-
-/* background canvas */
-
-#network{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-z-index:0;
-}
-
-/* card */
-
-.card{
-
-position:relative;
-
-width:100%;
-max-width:720px;
-
-padding:50px;
-
-border-radius:22px;
-
-background:rgba(20,25,32,0.85);
-
-backdrop-filter:blur(18px);
-
-border:1px solid #26303b;
-
-box-shadow:0 40px 120px rgba(0,0,0,0.7);
-
-z-index:2;
-
-}
-
-/* logo */
-
-.logo{
-
-text-align:center;
-
-font-size:2rem;
-
-font-weight:600;
-
-margin-bottom:6px;
-
-}
-
-.logo span{
-
-color:#22c55e;
-
-}
-
-/* system status */
-
-.status{
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-gap:8px;
-
-font-size:13px;
-
-color:#94a3b8;
-
-margin-bottom:20px;
-
-}
-
-.dot{
-
-width:8px;
-
-height:8px;
-
-background:#22c55e;
-
-border-radius:50%;
-
-box-shadow:0 0 10px #22c55e;
-
-}
-
-/* quote */
-
-.quote{
-
-background:#0f141b;
-
-border-left:4px solid #22c55e;
-
-padding:18px;
-
-border-radius:12px;
-
-margin-bottom:28px;
-
-font-size:14px;
-
-line-height:1.7;
-
-color:#cbd5e1;
-
-min-height:85px;
-
-}
-
-/* input */
-
-.input{
-
-background:#0f141b;
-
-border:1px solid #2b3643;
-
-border-radius:12px;
-
-padding:14px;
-
-margin-bottom:18px;
-
-transition:.2s;
-
-}
-
-.input:focus-within{
-
-border-color:#22c55e;
-
-box-shadow:0 0 12px #22c55e40;
-
-}
-
-input{
-
-width:100%;
-
-background:none;
-
-border:none;
-
-outline:none;
-
-color:white;
-
-font-size:14px;
-
-}
-
-/* button */
-
-button{
-
-width:100%;
-
-padding:14px;
-
-border:none;
-
-border-radius:12px;
-
-background:linear-gradient(135deg,#22c55e,#16a34a);
-
-font-weight:700;
-
-cursor:pointer;
-
-transition:.25s;
-
-}
-
-button:hover{
-
-transform:translateY(-2px);
-
-box-shadow:0 10px 30px #22c55e60;
-
-}
-
-/* loader */
-
-.loader{
-
-display:none;
-
-margin-top:12px;
-
-text-align:center;
-
-color:#94a3b8;
-
-font-size:13px;
-
-}
-
-/* footer */
-
-.footer{
-
-margin-top:18px;
-
-text-align:center;
-
-font-size:13px;
-
-color:#94a3b8;
-
-}
-
-.footer span{
-
-color:#22c55e;
-
-}
-
-/* author */
-
-.author{
-
-margin-top:6px;
-
-text-align:center;
-
-font-size:12px;
-
-color:#94a3b8;
-
-}
-
-.author span{
-
-color:#22c55e;
-
-font-weight:600;
-
-}
-
-/* responsive */
-
-@media (min-width:1100px){
-
-.card{
-
-max-width:840px;
-
-padding:60px;
-
-}
-
-.logo{
-
-font-size:2.3rem;
-
-}
-
-.quote{
-
-font-size:15px;
-
-}
-
-}
-
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Dehqon | AgroOS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
+        }
+
+        body {
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            background: #0b0f14;
+            color: white;
+            overflow: hidden;
+        }
+
+        /* background canvas */
+        #network {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        /* card */
+        .card {
+            position: relative;
+            width: 100%;
+            max-width: 720px;
+            padding: 50px;
+            border-radius: 22px;
+            background: rgba(20, 25, 32, 0.85);
+            backdrop-filter: blur(18px);
+            border: 1px solid #26303b;
+            box-shadow: 0 40px 120px rgba(0, 0, 0, 0.7);
+            z-index: 2;
+        }
+
+        /* logo */
+        .logo {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .logo span {
+            color: #22c55e;
+        }
+
+        /* system status */
+        .status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #94a3b8;
+            margin-bottom: 20px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #22c55e;
+        }
+
+        /* quote */
+        .quote {
+            background: #0f141b;
+            border-left: 4px solid #22c55e;
+            padding: 18px;
+            border-radius: 12px;
+            margin-bottom: 28px;
+            font-size: 14px;
+            line-height: 1.7;
+            color: #cbd5e1;
+            min-height: 85px;
+        }
+
+        /* input */
+        .input {
+            background: #0f141b;
+            border: 1px solid #2b3643;
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 18px;
+            transition: .2s;
+        }
+
+        .input:focus-within {
+            border-color: #22c55e;
+            box-shadow: 0 0 12px #22c55e40;
+        }
+
+        input {
+            width: 100%;
+            background: none;
+            border: none;
+            outline: none;
+            color: white;
+            font-size: 14px;
+        }
+
+        /* button */
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            font-weight: 700;
+            cursor: pointer;
+            transition: .25s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px #22c55e60;
+        }
+
+        /* loader */
+        .loader {
+            display: none;
+            margin-top: 12px;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+        /* footer */
+        .footer {
+            margin-top: 18px;
+            text-align: center;
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+        .footer span {
+            color: #22c55e;
+        }
+
+        /* author */
+        .author {
+            margin-top: 6px;
+            text-align: center;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .author span {
+            color: #22c55e;
+            font-weight: 600;
+        }
+
+        /* responsive */
+        @media (min-width: 1100px) {
+            .card {
+                max-width: 840px;
+                padding: 60px;
+            }
+            .logo {
+                font-size: 2.3rem;
+            }
+            .quote {
+                font-size: 15px;
+            }
+        }
+    </style>
 </head>
-
 <body>
-
-<canvas id="network"></canvas>
-
-<div class="card">
-
-<div class="logo">
-
-AI<span>Dehqon</span>
-
-</div>
-
-<div class="status">
-
-<div class="dot"></div>
-
-AI System Online
-
-</div>
-
-<div class="quote">
-
-<span id="typing"></span>
-
-</div>
-
-<div class="input">
-
-<input id="user" placeholder="Login">
-
-</div>
-
-<div class="input">
-
-<input id="pass" type="password" placeholder="Parol">
-
-</div>
-
-<button onclick="login()">Kirish</button>
-
-<div class="loader" id="loader">
-
-AI tizimga ulanmoqda...
-
-</div>
-
-<div class="footer">
-
-AI Dehqon • <span>Agro Intelligence Platform</span>
-
-</div>
-
-<div class="author">
-
-Loyiha muallifi: <span>Musayev Fayzullo</span>
-
-</div>
-
-</div>
-
-<script>
-
-/* typing loop */
-
-const text="AI Dehqon AgroOS — sensorlar, sun’iy intellekt va avtomatik boshqaruvni birlashtirgan aqlli agro platforma bo‘lib, daladagi real vaqt ma’lumotlarini tahlil qilib sug‘orish va agro jarayonlarini optimallashtiradi. Tizim hosildorlikni oshirish va resurslardan samarali foydalanishga yordam beradi.";
-
-let i=0;
-
-function type(){
-
-if(i < text.length){
-
-document.getElementById("typing").innerHTML += text.charAt(i);
-
-i++;
-
-setTimeout(type,25);
-
-}
-
-else{
-
-setTimeout(()=>{
-
-document.getElementById("typing").innerHTML="";
-
-i=0;
-
-type();
-
-},2500);
-
-}
-
-}
-
-type();
-
-/* AI network background */
-
-const canvas=document.getElementById("network");
-
-const ctx=canvas.getContext("2d");
-
-function resize(){
-
-canvas.width=window.innerWidth;
-
-canvas.height=window.innerHeight;
-
-}
-
-resize();
-
-window.addEventListener("resize",resize);
-
-let nodes=[];
-
-for(let i=0;i<70;i++){
-
-nodes.push({
-
-x:Math.random()*canvas.width,
-
-y:Math.random()*canvas.height,
-
-vx:(Math.random()-0.5)*0.5,
-
-vy:(Math.random()-0.5)*0.5
-
-});
-
-}
-
-function animate(){
-
-ctx.clearRect(0,0,canvas.width,canvas.height);
-
-nodes.forEach(a=>{
-
-a.x+=a.vx;
-
-a.y+=a.vy;
-
-ctx.fillStyle="#22c55e";
-
-ctx.beginPath();
-
-ctx.arc(a.x,a.y,2,0,Math.PI*2);
-
-ctx.fill();
-
-nodes.forEach(b=>{
-
-let dx=a.x-b.x;
-
-let dy=a.y-b.y;
-
-let dist=Math.sqrt(dx*dx+dy*dy);
-
-if(dist<120){
-
-ctx.strokeStyle="rgba(34,197,94,0.15)";
-
-ctx.lineWidth=1;
-
-ctx.beginPath();
-
-ctx.moveTo(a.x,a.y);
-
-ctx.lineTo(b.x,b.y);
-
-ctx.stroke();
-
-}
-
-});
-
-});
-
-requestAnimationFrame(animate);
-
-}
-
-animate();
-
-/* login */
-
-function login(){
-
-let u=document.getElementById("user").value;
-
-let p=document.getElementById("pass").value;
-
-document.getElementById("loader").style.display="block";
-
-setTimeout(()=>{
-
-if(u==="fayzullo" && p==="ai0008"){
-
-sessionStorage.setItem("auth","true");
-
-window.location.href="index.html";
-
-}
-
-else{
-
-document.getElementById("loader").innerHTML="Login yoki parol noto‘g‘ri";
-
-}
-
-},900);
-
-}
-
-</script>
-
-</body>
-</html>top:-250px;
-left:-250px;
-animation:spin 30s linear infinite;
-}
-
-@keyframes spin{
-from{transform:rotate(0deg)}
-to{transform:rotate(360deg)}
-}
-
-/* card */
-
-.card{
-position:relative;
-width:380px;
-padding:40px;
-border-radius:18px;
-background:rgba(20,25,32,0.85);
-backdrop-filter:blur(12px);
-border:1px solid #2a3440;
-box-shadow:0 30px 80px rgba(0,0,0,0.6);
-z-index:2;
-}
-
-/* logo */
-
-.logo{
-display:flex;
-align-items:center;
-justify-content:center;
-gap:10px;
-margin-bottom:30px;
-}
-
-.logo svg{
-width:36px;
-stroke:#22c55e;
-}
-
-.logo h1{
-font-size:1.6rem;
-}
-
-.logo span{
-color:#22c55e;
-}
-
-/* inputs */
-
-.group{
-margin-bottom:20px;
-}
-
-.input{
-display:flex;
-align-items:center;
-background:#0f141b;
-border:1px solid #2b3643;
-border-radius:10px;
-padding:12px;
-gap:10px;
-transition:0.2s;
-}
-
-.input:focus-within{
-border-color:#22c55e;
-box-shadow:0 0 8px #22c55e40;
-}
-
-.input svg{
-width:18px;
-stroke:#94a3b8;
-}
-
-input{
-background:none;
-border:none;
-outline:none;
-color:white;
-width:100%;
-font-size:14px;
-}
-
-/* password toggle */
-
-.eye{
-cursor:pointer;
-}
-
-/* button */
-
-button{
-width:100%;
-padding:12px;
-border:none;
-border-radius:10px;
-background:linear-gradient(135deg,#22c55e,#16a34a);
-color:#0b0f14;
-font-weight:700;
-font-size:15px;
-cursor:pointer;
-transition:0.25s;
-}
-
-button:hover{
-transform:translateY(-2px);
-box-shadow:0 10px 25px #22c55e50;
-}
-
-/* loading */
-
-.loader{
-display:none;
-margin-top:12px;
-text-align:center;
-font-size:13px;
-color:#94a3b8;
-}
-
-/* error */
-
-.error{
-display:none;
-margin-top:10px;
-text-align:center;
-font-size:13px;
-color:#f87171;
-}
-
-/* footer */
-
-.footer{
-margin-top:20px;
-text-align:center;
-font-size:12px;
-color:#94a3b8;
-}
-
-.footer span{
-color:#22c55e;
-}
-
-</style>
-
-</head>
-
-<body>
-
-<div class="card">
-
-<div class="logo">
-
-<svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-<path d="M12 2L2 7l10 5 10-5-10-5z"/>
-<path d="M2 17l10 5 10-5"/>
-<path d="M2 12l10 5 10-5"/>
-</svg>
-
-<h1>AI<span>Dehqon</span></h1>
-
-</div>
-
-<div class="group">
-<div class="input">
-
-<svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-<circle cx="12" cy="7" r="4"/>
-<path d="M5.5 21a6.5 6.5 0 0113 0"/>
-</svg>
-
-<input id="user" placeholder="Login">
-
-</div>
-</div>
-
-<div class="group">
-<div class="input">
-
-<svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-<rect x="3" y="11" width="18" height="11" rx="2"/>
-<path d="M7 11V7a5 5 0 0110 0v4"/>
-</svg>
-
-<input id="pass" type="password" placeholder="Parol">
-
-<svg class="eye" onclick="togglePass()" viewBox="0 0 24 24" fill="none" stroke-width="2">
-<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-<circle cx="12" cy="12" r="3"/>
-</svg>
-
-</div>
-</div>
-
-<button onclick="login()">Kirish</button>
-
-<div class="loader" id="loader">
-Tizimga kirilmoqda...
-</div>
-
-<div class="error" id="error">
-Login yoki parol noto‘g‘ri
-</div>
-
-<div class="footer">
-AI Dehqon • <span>Agro Intelligence Platform</span>
-</div>
-
-</div>
-
-<script>
-
-function togglePass(){
-
-let p=document.getElementById("pass")
-
-if(p.type==="password"){
-p.type="text"
-}else{
-p.type="password"
-}
-
-}
-
-function login(){
-
-let u=document.getElementById("user").value
-let p=document.getElementById("pass").value
-
-document.getElementById("loader").style.display="block"
-
-setTimeout(()=>{
-
-if(u==="fayzullo" && p==="ai0008"){
-
-sessionStorage.setItem("auth","true")
-
-window.location.href="index.html"
-
-}else{
-
-document.getElementById("loader").style.display="none"
-document.getElementById("error").style.display="block"
-
-}
-
-},800)
-
-}
-
-</script>
-
+    <canvas id="network"></canvas>
+
+    <div class="card">
+        <div class="logo">
+            AI<span>Dehqon</span>
+        </div>
+
+        <div class="status">
+            <div class="dot"></div>
+            AI System Online
+        </div>
+
+        <div class="quote">
+            <span id="typing"></span>
+        </div>
+
+        <div class="input">
+            <input id="user" placeholder="Login">
+        </div>
+
+        <div class="input">
+            <input id="pass" type="password" placeholder="Parol">
+        </div>
+
+        <button onclick="login()">Kirish</button>
+
+        <div class="loader" id="loader">
+            AI tizimga ulanmoqda...
+        </div>
+
+        <div class="footer">
+            AI Dehqon • <span>Agro Intelligence Platform</span>
+        </div>
+
+        <div class="author">
+            Loyiha muallifi: <span>Musayev Fayzullo</span>
+        </div>
+    </div>
+
+    <script>
+        // typing loop
+        const text = "AI Dehqon AgroOS — sensorlar, sun’iy intellekt va avtomatik boshqaruvni birlashtirgan aqlli agro platforma bo‘lib, daladagi real vaqt ma’lumotlarini tahlil qilib sug‘orish va agro jarayonlarini optimallashtiradi. Tizim hosildorlikni oshirish va resurslardan samarali foydalanishga yordam beradi.";
+        let i = 0;
+
+        function type() {
+            if (i < text.length) {
+                document.getElementById("typing").innerHTML += text.charAt(i);
+                i++;
+                setTimeout(type, 25);
+            } else {
+                setTimeout(() => {
+                    document.getElementById("typing").innerHTML = "";
+                    i = 0;
+                    type();
+                }, 2500);
+            }
+        }
+        type();
+
+        // AI network background
+        const canvas = document.getElementById("network");
+        const ctx = canvas.getContext("2d");
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener("resize", resize);
+
+        let nodes = [];
+        for (let i = 0; i < 70; i++) {
+            nodes.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: (Math.random() - 0.5) * 0.5,
+                vy: (Math.random() - 0.5) * 0.5
+            });
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            nodes.forEach(a => {
+                a.x += a.vx;
+                a.y += a.vy;
+                ctx.fillStyle = "#22c55e";
+                ctx.beginPath();
+                ctx.arc(a.x, a.y, 2, 0, Math.PI * 2);
+                ctx.fill();
+
+                nodes.forEach(b => {
+                    let dx = a.x - b.x;
+                    let dy = a.y - b.y;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 120) {
+                        ctx.strokeStyle = "rgba(34,197,94,0.15)";
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(a.x, a.y);
+                        ctx.lineTo(b.x, b.y);
+                        ctx.stroke();
+                    }
+                });
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // login
+        function login() {
+            let u = document.getElementById("user").value;
+            let p = document.getElementById("pass").value;
+            document.getElementById("loader").style.display = "block";
+
+            setTimeout(() => {
+                if (u === "fayzullo" && p === "ai0008") {
+                    sessionStorage.setItem("auth", "true");
+                    // Agar dashboard sahifasi bo'lmasa, alert chiqaramiz
+                    alert("Muvaffaqiyatli kirish! (Dashboard sahifasi hozircha mavjud emas)");
+                    document.getElementById("loader").style.display = "none";
+                } else {
+                    document.getElementById("loader").innerHTML = "❌ Login yoki parol noto‘g‘ri";
+                    setTimeout(() => {
+                        document.getElementById("loader").style.display = "none";
+                        document.getElementById("loader").innerHTML = "AI tizimga ulanmoqda...";
+                    }, 2000);
+                }
+            }, 900);
+        }
+    </script>
 </body>
 </html>
