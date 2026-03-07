@@ -1,40 +1,359 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Dehqon | AgroOS</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
-        }
 
-        body {
-            min-height: 100vh;
-            display: grid;
-            place-items: center;
-            background: #0b0f14;
-            color: white;
-            overflow: hidden;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        /* background canvas */
-        #network {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-        }
+<title>AI Dehqon | AgroOS</title>
 
-        /* card */
-        .card {
-            position: relative;
-            width: 100%;
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
+}
+
+body{
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+background:#0b0f14;
+color:white;
+overflow:hidden;
+}
+
+/* background canvas */
+
+#network{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+z-index:0;
+}
+
+/* card */
+
+.card{
+position:relative;
+width:90%;
+max-width:720px;
+padding:50px;
+border-radius:22px;
+background:rgba(20,25,32,0.85);
+backdrop-filter:blur(18px);
+border:1px solid #26303b;
+box-shadow:0 40px 120px rgba(0,0,0,0.7);
+z-index:2;
+}
+
+/* logo */
+
+.logo{
+text-align:center;
+font-size:2rem;
+font-weight:600;
+margin-bottom:10px;
+}
+
+.logo span{
+color:#22c55e;
+}
+
+/* status */
+
+.status{
+display:flex;
+align-items:center;
+justify-content:center;
+gap:8px;
+font-size:13px;
+color:#94a3b8;
+margin-bottom:20px;
+}
+
+.dot{
+width:8px;
+height:8px;
+background:#22c55e;
+border-radius:50%;
+box-shadow:0 0 10px #22c55e;
+}
+
+/* quote */
+
+.quote{
+background:#0f141b;
+border-left:4px solid #22c55e;
+padding:18px;
+border-radius:12px;
+margin-bottom:28px;
+font-size:14px;
+line-height:1.7;
+color:#cbd5e1;
+min-height:90px;
+}
+
+/* inputs */
+
+.input{
+background:#0f141b;
+border:1px solid #2b3643;
+border-radius:12px;
+padding:14px;
+margin-bottom:18px;
+transition:.2s;
+}
+
+.input:focus-within{
+border-color:#22c55e;
+box-shadow:0 0 12px #22c55e40;
+}
+
+input{
+width:100%;
+background:none;
+border:none;
+outline:none;
+color:white;
+font-size:14px;
+}
+
+/* button */
+
+button{
+width:100%;
+padding:14px;
+border:none;
+border-radius:12px;
+background:linear-gradient(135deg,#22c55e,#16a34a);
+font-weight:700;
+cursor:pointer;
+transition:.25s;
+}
+
+button:hover{
+transform:translateY(-2px);
+box-shadow:0 10px 30px #22c55e60;
+}
+
+/* loader */
+
+.loader{
+display:none;
+margin-top:12px;
+text-align:center;
+color:#94a3b8;
+font-size:13px;
+}
+
+/* footer */
+
+.footer{
+margin-top:18px;
+text-align:center;
+font-size:13px;
+color:#94a3b8;
+}
+
+.footer span{
+color:#22c55e;
+}
+
+/* author */
+
+.author{
+margin-top:6px;
+text-align:center;
+font-size:12px;
+color:#94a3b8;
+}
+
+.author span{
+color:#22c55e;
+font-weight:600;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<canvas id="network"></canvas>
+
+<div class="card">
+
+<div class="logo">
+AI<span>Dehqon</span>
+</div>
+
+<div class="status">
+<div class="dot"></div>
+AI System Online
+</div>
+
+<div class="quote">
+<span id="typing"></span>
+</div>
+
+<div class="input">
+<input id="user" placeholder="Login">
+</div>
+
+<div class="input">
+<input id="pass" type="password" placeholder="Parol">
+</div>
+
+<button onclick="login()">Kirish</button>
+
+<div class="loader" id="loader">
+AI tizimga ulanmoqda...
+</div>
+
+<div class="footer">
+AI Dehqon • <span>Agro Intelligence Platform</span>
+</div>
+
+<div class="author">
+Loyiha muallifi: <span>Musayev Fayzullo</span>
+</div>
+
+</div>
+
+<script>
+
+/* typing animation */
+
+const text="AI Dehqon AgroOS — sensorlar, sun’iy intellekt va avtomatik boshqaruvni birlashtirgan aqlli agro platforma.";
+
+let i=0;
+
+function type(){
+
+if(i<text.length){
+document.getElementById("typing").innerHTML+=text.charAt(i);
+i++;
+setTimeout(type,25);
+}
+
+else{
+setTimeout(()=>{
+document.getElementById("typing").innerHTML="";
+i=0;
+type();
+},3000);
+}
+
+}
+
+type();
+
+/* background network */
+
+const canvas=document.getElementById("network");
+const ctx=canvas.getContext("2d");
+
+function resize(){
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+}
+
+resize();
+window.addEventListener("resize",resize);
+
+let nodes=[];
+
+for(let i=0;i<60;i++){
+
+nodes.push({
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+vx:(Math.random()-0.5)*0.4,
+vy:(Math.random()-0.5)*0.4
+});
+
+}
+
+function animate(){
+
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+nodes.forEach(a=>{
+
+a.x+=a.vx;
+a.y+=a.vy;
+
+ctx.fillStyle="#22c55e";
+
+ctx.beginPath();
+ctx.arc(a.x,a.y,2,0,Math.PI*2);
+ctx.fill();
+
+nodes.forEach(b=>{
+
+let dx=a.x-b.x;
+let dy=a.y-b.y;
+let dist=Math.sqrt(dx*dx+dy*dy);
+
+if(dist<120){
+
+ctx.strokeStyle="rgba(34,197,94,0.15)";
+
+ctx.beginPath();
+ctx.moveTo(a.x,a.y);
+ctx.lineTo(b.x,b.y);
+ctx.stroke();
+
+}
+
+});
+
+});
+
+requestAnimationFrame(animate);
+
+}
+
+animate();
+
+/* login */
+
+function login(){
+
+let u=document.getElementById("user").value;
+let p=document.getElementById("pass").value;
+
+document.getElementById("loader").style.display="block";
+
+setTimeout(()=>{
+
+if(u==="fayzullo" && p==="ai0008"){
+
+sessionStorage.setItem("auth","true");
+window.location.href="index.html";
+
+}
+
+else{
+
+document.getElementById("loader").innerHTML="Login yoki parol noto‘g‘ri";
+
+}
+
+},800);
+
+}
+
+</script>
+
+</body>
+</html>            width: 100%;
             max-width: 720px;
             padding: 50px;
             border-radius: 22px;
