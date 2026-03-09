@@ -86,7 +86,7 @@ border-radius:50%;
 box-shadow:0 0 10px #22c55e;
 }
 
-/* quote */
+/* quote - FIXED HEIGHT SOLUTION */
 
 .quote{
 background:#0f141b;
@@ -97,7 +97,27 @@ margin-bottom:28px;
 font-size:14px;
 line-height:1.7;
 color:#cbd5e1;
-min-height:90px;
+/* Fixed height to prevent layout shift */
+height:160px;
+overflow-y:auto;
+/* Custom scrollbar for better UX */
+scrollbar-width:thin;
+scrollbar-color:#22c55e #0f141b;
+}
+
+/* Webkit scrollbar styling (Chrome, Safari, Edge) */
+.quote::-webkit-scrollbar{
+width:4px;
+}
+
+.quote::-webkit-scrollbar-track{
+background:#0f141b;
+border-radius:10px;
+}
+
+.quote::-webkit-scrollbar-thumb{
+background:#22c55e;
+border-radius:10px;
 }
 
 /* input */
@@ -136,6 +156,8 @@ background:linear-gradient(135deg,#22c55e,#16a34a);
 font-weight:700;
 cursor:pointer;
 transition:.25s;
+color:white;
+font-size:16px;
 }
 
 button:hover{
@@ -231,28 +253,32 @@ Loyiha muallifi: <span>Musayev Fayzullo</span>
 
 /* typing animation */
 
-const text="AI Dehqon AgroOS — sun’iy intellekt asosida ishlovchi aqlli agro boshqaruv tizimi. Tizim sensorlar, iqlim ma’lumotlari va vizual tahlillarni birlashtirib, daladagi jarayonlarni real vaqt rejimida boshqaradi. Natijada hosildorlik oshadi, resurslar tejaladi va qishloq xo‘jaligida raqamli boshqaruv yangi bosqichga chiqadi.";
+const text="AI Dehqon AgroOS — dalani sun’iy intellekt bilan boshqaradigan aqlli tizim. Sensor va iqlim ma’lumotlarini tahlil qilib, real vaqt rejimida qaror qabul qiladi, hosildorlikni oshiradi va resurslarni tejaydi.";
 
 let i=0;
+let isDeleting = false;
 
 function type(){
 
-if(i < text.length){
+if(!isDeleting && i < text.length){
 document.getElementById("typing").innerHTML += text.charAt(i);
 i++;
 setTimeout(type,25);
 }
-
-else{
-
-setTimeout(()=>{
-document.getElementById("typing").innerHTML="";
-i=0;
-type();
-},3000);
-
+else if(i >= text.length && !isDeleting){
+isDeleting = true;
+setTimeout(type,3000);
 }
-
+else if(isDeleting && i > 0){
+let currentText = document.getElementById("typing").innerHTML;
+document.getElementById("typing").innerHTML = currentText.slice(0, -1);
+i--;
+setTimeout(type,15);
+}
+else if(isDeleting && i === 0){
+isDeleting = false;
+setTimeout(type,500);
+}
 }
 
 type();
@@ -291,6 +317,10 @@ nodes.forEach(a=>{
 
 a.x+=a.vx;
 a.y+=a.vy;
+
+// Bounce off edges
+if(a.x < 0 || a.x > canvas.width) a.vx *= -1;
+if(a.y < 0 || a.y > canvas.height) a.vy *= -1;
 
 ctx.fillStyle="#22c55e";
 
