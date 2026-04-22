@@ -252,6 +252,121 @@ Loyiha muallifi: <span>Musayev Fayzullo</span>
 <script>
 
 /* typing animation */
+// ========== QO'SHIMCHA HIMOYA KODI ==========
+// Buni sizning mavjud kodingizdan keyin yoki oldin qo'shing
+
+(function() {
+    // 1. Drag va Drop ni bloklash (rasmlarni sudrab olishni oldini olish)
+    document.addEventListener('dragstart', function(e) {
+        e.preventDefault();
+        return false;
+    });
+    
+    // 2. Copy, Cut, Paste ni bloklash
+    document.addEventListener('copy', function(e) {
+        e.preventDefault();
+        alert('Nusxa olish bloklangan!');
+        return false;
+    });
+    
+    document.addEventListener('cut', function(e) {
+        e.preventDefault();
+        return false;
+    });
+    
+    document.addEventListener('paste', function(e) {
+        e.preventDefault();
+        return false;
+    });
+    
+    // 3. Print screen (PrtSc) va boshqa tugmalarni bloklash
+    document.addEventListener('keyup', function(e) {
+        if (e.key === 'PrintScreen') {
+            navigator.clipboard.writeText('');
+            alert('Screenshot olish bloklangan!');
+        }
+    });
+    
+    // 4. Konsolni tozalashni oldini olish
+    const originalClear = console.clear;
+    console.clear = function() {
+        // Hech narsa qilma yoki xabar chiqar
+        console.log('Console clear bloklangan!');
+    };
+    
+    // 5. Element inspect ni bloklash (qo'shimcha)
+    document.addEventListener('keydown', function(e) {
+        // Ctrl + Shift + C (element inspect)
+        if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Ctrl + Shift + K (Web console Firefox)
+        if (e.ctrlKey && e.shiftKey && e.key === 'K') {
+            e.preventDefault();
+            return false;
+        }
+    });
+    
+    // 6. DevTools ni aniqlashning yana bir usuli
+    function detectDevTools() {
+        const element = new Image();
+        Object.defineProperty(element, 'id', {
+            get: function() {
+                // DevTools ochilgan
+                document.body.innerHTML = '<h1 style="color:red">Himoya tizimi faollashdi!</h1>';
+                window.location.href = 'about:blank';
+            }
+        });
+        console.log(element);
+    }
+    
+    // Har 2 sekundda tekshir
+    setInterval(detectDevTools, 2000);
+    
+    // 7. Selection (matn tanlash) ni butunlay bloklash
+    document.body.style.userSelect = 'none';
+    document.body.style.webkitUserSelect = 'none';
+    document.body.style.msUserSelect = 'none';
+    document.body.style.mozUserSelect = 'none';
+    
+    // 8. Kontekst menyuning boshqa variantlari
+    window.oncontextmenu = function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+    };
+    
+    // 9. Touch qurilmalar uchun (uzun bosish menyusi)
+    document.addEventListener('touchstart', function(e) {
+        if (e.touches.length === 1 && e.touches[0].target) {
+            let timer;
+            timer = setTimeout(function() {
+                e.preventDefault();
+                return false;
+            }, 500);
+            
+            document.addEventListener('touchend', function() {
+                clearTimeout(timer);
+            });
+        }
+    });
+    
+    // 10. Sahifa manbasini ko'rishni qiyinlashtirish (minify qilingan kod uchun)
+    if (window.name !== 'protected') {
+        window.name = 'protected';
+        // Bu sahifani iframe orqali ochishga urinishni bloklaydi
+        if (window.top !== window.self) {
+            window.top.location = window.self.location;
+        }
+    }
+    
+    console.log('%c⚠️ Himoya tizimi faollashtirilgan!', 'color: red; font-size: 16px');
+    console.log('%cDeveloper Tools bloklangan!', 'color: orange; font-size: 14px');
+  
+})();
+  ///Himoya uchun 
 
 const text="AI Dehqon AgroOS — dalani sun’iy intellekt bilan boshqaradigan aqlli tizim. Sensor va iqlim ma’lumotlarini tahlil qilib, real vaqt rejimida qaror qabul qiladi, hosildorlikni oshiradi va resurslarni tejaydi.";
 
