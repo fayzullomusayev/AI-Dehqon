@@ -1,506 +1,1555 @@
 <!DOCTYPE html>
 <html lang="uz">
-
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Dehqon | Smart Agriculture 2.0</title>
+    <!-- Ikonkalar uchun FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #22c55e;
+            --primary-dark: #16a34a;
+            --primary-light: #86efac;
+            --primary-gradient: linear-gradient(135deg, #22c55e, #15803d);
+            
+            --bg-primary: #0a0f1a;
+            --bg-secondary: #111827;
+            --bg-card: rgba(17, 24, 39, 0.8);
+            --bg-card-hover: rgba(34, 197, 94, 0.08);
+            
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            
+            --border-color: rgba(255, 255, 255, 0.06);
+            --border-glow: rgba(34, 197, 94, 0.2);
+            
+            --shadow-glow: 0 0 40px rgba(34, 197, 94, 0.1);
+            --shadow-card: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<title>AI Dehqon | AgroOS</title>
+        body {
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
 
-<style>
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
-}
+        /* ----- NAVBAR ----- */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 16px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: transparent;
+        }
 
-body{
-min-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-background:#0b0f14;
-color:white;
-overflow:hidden;
-}
+        header.scrolled {
+            background: rgba(10, 15, 26, 0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
 
-/* canvas background */
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .logo i {
+            color: var(--primary);
+            font-size: 2rem;
+        }
+        .logo span {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-#network{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-z-index:0;
-}
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
 
-/* card */
+        .nav-actions .language-selector {
+            display: flex;
+            gap: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 4px;
+        }
 
-.card{
-position:relative;
-width:90%;
-max-width:700px;
-padding:50px;
-border-radius:22px;
-background:rgba(20,25,32,0.85);
-backdrop-filter:blur(18px);
-border:1px solid #26303b;
-box-shadow:0 40px 120px rgba(0,0,0,0.7);
-z-index:2;
-}
+        .nav-actions .language-selector button {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
 
-/* logo */
+        .nav-actions .language-selector button.active {
+            background: var(--primary);
+            color: white;
+        }
 
-.logo{
-text-align:center;
-font-size:2rem;
-font-weight:600;
-margin-bottom:10px;
-}
+        .nav-actions .language-selector button:hover:not(.active) {
+            color: var(--text-primary);
+        }
 
-.logo span{
-color:#22c55e;
-}
+        .login-btn {
+            padding: 10px 24px;
+            background: var(--primary-gradient);
+            border: none;
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+        }
 
-/* system status */
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(34, 197, 94, 0.3);
+        }
 
-.status{
-display:flex;
-align-items:center;
-justify-content:center;
-gap:8px;
-font-size:13px;
-color:#94a3b8;
-margin-bottom:20px;
-}
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
 
-.dot{
-width:8px;
-height:8px;
-background:#22c55e;
-border-radius:50%;
-box-shadow:0 0 10px #22c55e;
-}
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+            .nav-actions .language-selector {
+                display: none;
+            }
+        }
 
-/* quote - FIXED HEIGHT SOLUTION */
+        /* ----- HERO SECTION ----- */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 120px 20px 80px;
+            position: relative;
+            overflow: hidden;
+        }
 
-.quote{
-background:#0f141b;
-border-left:4px solid #22c55e;
-padding:18px;
-border-radius:12px;
-margin-bottom:28px;
-font-size:14px;
-line-height:1.7;
-color:#cbd5e1;
-/* Fixed height to prevent layout shift */
-height:160px;
-overflow-y:auto;
-/* Custom scrollbar for better UX */
-scrollbar-width:thin;
-scrollbar-color:#22c55e #0f141b;
-}
+        /* Animated Background */
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
 
-/* Webkit scrollbar styling (Chrome, Safari, Edge) */
-.quote::-webkit-scrollbar{
-width:4px;
-}
+        .hero-bg .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.15;
+            animation: float 20s infinite ease-in-out;
+        }
 
-.quote::-webkit-scrollbar-track{
-background:#0f141b;
-border-radius:10px;
-}
+        .hero-bg .orb:nth-child(1) {
+            width: 600px;
+            height: 600px;
+            background: var(--primary);
+            top: -10%;
+            right: -10%;
+            animation-delay: 0s;
+        }
 
-.quote::-webkit-scrollbar-thumb{
-background:#22c55e;
-border-radius:10px;
-}
+        .hero-bg .orb:nth-child(2) {
+            width: 400px;
+            height: 400px;
+            background: #3b82f6;
+            bottom: -10%;
+            left: -10%;
+            animation-delay: -7s;
+        }
 
-/* input */
+        .hero-bg .orb:nth-child(3) {
+            width: 300px;
+            height: 300px;
+            background: #8b5cf6;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: -14s;
+        }
 
-.input{
-background:#0f141b;
-border:1px solid #2b3643;
-border-radius:12px;
-padding:14px;
-margin-bottom:18px;
-transition:.2s;
-}
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
 
-.input:focus-within{
-border-color:#22c55e;
-box-shadow:0 0 12px #22c55e40;
-}
+        #network-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.3;
+        }
 
-input{
-width:100%;
-background:none;
-border:none;
-outline:none;
-color:white;
-font-size:14px;
-}
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+        }
 
-/* button */
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 30px;
+            animation: pulse-badge 2s infinite;
+        }
 
-button{
-width:100%;
-padding:14px;
-border:none;
-border-radius:12px;
-background:linear-gradient(135deg,#22c55e,#16a34a);
-font-weight:700;
-cursor:pointer;
-transition:.25s;
-color:white;
-font-size:16px;
-}
+        .hero-badge .dot {
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: dot-pulse 1.5s infinite;
+        }
 
-button:hover{
-transform:translateY(-2px);
-box-shadow:0 10px 30px #22c55e60;
-}
+        @keyframes pulse-badge {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.2); }
+            50% { box-shadow: 0 0 0 15px rgba(34, 197, 94, 0); }
+        }
 
-/* loader */
+        @keyframes dot-pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(0.8); }
+        }
 
-.loader{
-display:none;
-margin-top:12px;
-text-align:center;
-color:#94a3b8;
-font-size:13px;
-}
+        .hero h1 {
+            font-size: 4.5rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            letter-spacing: -1px;
+        }
 
-/* footer */
+        .hero h1 .highlight {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+        }
 
-.footer{
-margin-top:18px;
-text-align:center;
-font-size:13px;
-color:#94a3b8;
-}
+        .hero h1 .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--primary-gradient);
+            border-radius: 2px;
+            opacity: 0.3;
+        }
 
-.footer span{
-color:#22c55e;
-}
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 650px;
+            margin: 0 auto 40px;
+            line-height: 1.8;
+        }
 
-/* author */
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
 
-.author{
-margin-top:6px;
-text-align:center;
-font-size:12px;
-color:#94a3b8;
-}
+        .btn-primary {
+            padding: 16px 40px;
+            background: var(--primary-gradient);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
 
-.author span{
-color:#22c55e;
-font-weight:600;
-}
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(34, 197, 94, 0.35);
+        }
 
-</style>
+        .btn-secondary {
+            padding: 16px 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
 
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-3px);
+        }
+
+        /* Hero Stats */
+        .hero-stats {
+            display: flex;
+            gap: 40px;
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px solid var(--border-color);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat .number {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-stat .label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* ----- SECTIONS SHARED ----- */
+        section {
+            padding: 100px 5%;
+            position: relative;
+        }
+
+        .section-bg-alt {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 70px;
+        }
+
+        .section-header .tag {
+            display: inline-block;
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--primary);
+            padding: 4px 16px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .section-header h2 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ----- VALUE PROPOSITION ----- */
+        .value-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .value-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            cursor: default;
+        }
+
+        .value-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary-gradient);
+            opacity: 0;
+            transition: opacity 0.4s;
+            z-index: 0;
+        }
+
+        .value-card:hover::before {
+            opacity: 0.03;
+        }
+
+        .value-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--primary-gradient);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .value-card:hover::after {
+            transform: scaleX(1);
+        }
+
+        .value-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(34, 197, 94, 0.2);
+            box-shadow: var(--shadow-card);
+        }
+
+        .value-card > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .value-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(34, 197, 94, 0.1);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 24px;
+            transition: all 0.3s;
+        }
+
+        .value-card:hover .value-icon {
+            background: rgba(34, 197, 94, 0.2);
+            transform: scale(1.05);
+        }
+
+        .value-card h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .value-card p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .value-list {
+            list-style: none;
+        }
+
+        .value-list li {
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .value-list li:hover {
+            color: var(--text-primary);
+        }
+
+        .value-list li i {
+            color: var(--primary);
+            font-size: 0.75rem;
+            width: 18px;
+            height: 18px;
+            background: rgba(34, 197, 94, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        /* ----- STATS SECTION ----- */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            max-width: 900px;
+            margin: 60px auto 0;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 30px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            transition: all 0.3s;
+        }
+
+        .stat-box:hover {
+            border-color: rgba(34, 197, 94, 0.3);
+            transform: translateY(-4px);
+        }
+
+        .stat-box .icon {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .stat-box h4 {
+            font-size: 2.2rem;
+            font-weight: 900;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 4px;
+        }
+
+        .stat-box p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* ----- ARCHITECTURE SECTION ----- */
+        .arch-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .arch-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 35px;
+            border-radius: 16px;
+            transition: all 0.4s;
+            text-align: center;
+        }
+
+        .arch-card:hover {
+            border-color: rgba(34, 197, 94, 0.2);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-card);
+        }
+
+        .arch-card .icon {
+            width: 70px;
+            height: 70px;
+            background: rgba(34, 197, 94, 0.08);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--primary);
+            margin: 0 auto 20px;
+        }
+
+        .arch-card h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .arch-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        /* ----- FOOTER ----- */
+        footer {
+            background: var(--bg-secondary);
+            padding: 80px 5% 30px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 50px;
+        }
+
+        .footer-brand .logo {
+            font-size: 1.6rem;
+            margin-bottom: 16px;
+        }
+
+        .footer-brand p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            max-width: 350px;
+            line-height: 1.8;
+        }
+
+        .footer-brand .social-links {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .footer-brand .social-links a {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .footer-brand .social-links a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .footer-col h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-col ul li a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--primary);
+            padding-left: 4px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-bottom span {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+        }
+
+        /* ----- LOGIN MODAL (Enhanced) ----- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 15, 26, 0.92);
+            backdrop-filter: blur(20px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .login-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 48px;
+            border-radius: 24px;
+            width: 90%;
+            max-width: 420px;
+            box-shadow: var(--shadow-card);
+            transform: scale(0.9) translateY(30px);
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--primary-gradient);
+        }
+
+        .modal-overlay.active .login-box {
+            transform: scale(1) translateY(0);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+            background: transparent;
+            border: none;
+        }
+
+        .close-modal:hover {
+            color: var(--text-primary);
+            transform: rotate(90deg);
+        }
+
+        .login-box .login-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .login-box .login-header .icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(34, 197, 94, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin: 0 auto 16px;
+        }
+
+        .login-box .login-header h2 {
+            font-size: 1.6rem;
+            font-weight: 800;
+        }
+
+        .login-box .login-header p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .input-group {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s;
+        }
+
+        .input-group:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+        }
+
+        .input-group i {
+            color: var(--text-muted);
+            font-size: 1rem;
+            width: 18px;
+            transition: color 0.3s;
+        }
+
+        .input-group:focus-within i {
+            color: var(--primary);
+        }
+
+        .input-group input {
+            width: 100%;
+            background: none;
+            border: none;
+            outline: none;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
+        .input-group input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .login-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+            font-size: 0.85rem;
+        }
+
+        .login-options label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .login-options label input[type="checkbox"] {
+            accent-color: var(--primary);
+            width: 16px;
+            height: 16px;
+        }
+
+        .login-options a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-options a:hover {
+            text-decoration: underline;
+        }
+
+        .login-submit {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            background: var(--primary-gradient);
+            font-weight: 700;
+            cursor: pointer;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .login-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(34, 197, 94, 0.35);
+        }
+
+        .login-submit:active {
+            transform: scale(0.98);
+        }
+
+        .login-error {
+            color: #ef4444;
+            text-align: center;
+            margin-top: 16px;
+            font-size: 0.85rem;
+            display: none;
+            padding: 8px;
+            background: rgba(239, 68, 68, 0.1);
+            border-radius: 8px;
+        }
+
+        .login-box .signup-link {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .login-box .signup-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-box .signup-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* ----- SCROLL REVEAL ----- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+
+        /* ----- RESPONSIVE ----- */
+        @media (max-width: 1024px) {
+            .hero h1 {
+                font-size: 3.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .hero p {
+                font-size: 1rem;
+            }
+            .section-header h2 {
+                font-size: 2.2rem;
+            }
+            .value-grid {
+                grid-template-columns: 1fr;
+            }
+            .stats-container {
+                grid-template-columns: 1fr 1fr;
+            }
+            .hero-stats {
+                gap: 20px;
+            }
+            .hero-stat .number {
+                font-size: 1.8rem;
+            }
+            .login-box {
+                padding: 32px 24px;
+            }
+            .nav-actions .language-selector {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .hero-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            .btn-primary, .btn-secondary {
+                width: 100%;
+                justify-content: center;
+            }
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+            .value-card {
+                padding: 28px;
+            }
+            .hero-stats {
+                flex-direction: column;
+                gap: 16px;
+            }
+        }
+    </style>
 </head>
-
 <body>
 
-<canvas id="network"></canvas>
+    <!-- HEADER -->
+    <header id="header">
+        <div class="logo">
+            <i class="fas fa-seedling"></i>
+            AI<span>Dehqon</span>
+        </div>
+        <div class="nav-actions">
+            <div class="language-selector">
+                <button class="active">UZ</button>
+                <button>RU</button>
+                <button>EN</button>
+            </div>
+            <button class="login-btn" onclick="openModal()">
+                <i class="fas fa-lock"></i> Kirish
+            </button>
+            <button class="mobile-menu-btn" aria-label="Menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
 
-<div class="card">
+    <!-- HERO -->
+    <section class="hero" id="home">
+        <div class="hero-bg">
+            <div class="orb"></div>
+            <div class="orb"></div>
+            <div class="orb"></div>
+        </div>
+        <canvas id="network-canvas"></canvas>
 
-<div class="logo">
-AI<span>Dehqon</span>
-</div>
+        <div class="hero-content">
+            <div class="hero-badge reveal">
+                <span class="dot"></span>
+                AgroOS Platformasi v2.0
+            </div>
 
-<div class="status">
-<div class="dot"></div>
-AI System Online
-</div>
+            <h1 class="reveal">
+                Qishloq xoʻjaligini <br>
+                <span class="highlight">aqlli boshqarish</span> ekotizimi
+            </h1>
 
-<div class="quote">
-<span id="typing"></span>
-</div>
+            <p class="reveal">
+                Sun'iy intellekt orqali daladagi har bir qadamni aniq hisoblang. 
+                Xarajatlarni qisqartiring, resurslarni tejang va barqaror hosildorlikka erishing.
+            </p>
 
-<div class="input">
-<input id="user" placeholder="Login">
-</div>
+            <div class="hero-actions reveal">
+                <a href="#solutions" class="btn-primary">
+                    <i class="fas fa-rocket"></i> Loyihani o'rganish
+                </a>
+                <a href="#contact" class="btn-secondary">
+                    <i class="fas fa-phone-alt"></i> Bog'lanish
+                </a>
+            </div>
 
-<div class="input">
-<input id="pass" type="password" placeholder="Parol">
-</div>
+            <div class="hero-stats reveal">
+                <div class="hero-stat">
+                    <div class="number" data-count="150">0</div>
+                    <div class="label">Fermer xo'jaliklari</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="number" data-count="45">0</div>
+                    <div class="label">Gektar maydon</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="number" data-count="30">0</div>
+                    <div class="label">Suv tejash %</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="number" data-count="24">0</div>
+                    <div class="label">7/24 Monitoring</div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<button onclick="login()">Kirish</button>
+    <!-- VALUE PROPOSITION -->
+    <section id="solutions" class="section-bg-alt">
+        <div class="section-header reveal">
+            <span class="tag">Qanday ishlaydi</span>
+            <h2>Keng qamrovli yechimlar</h2>
+            <p>AI Dehqon oddiy avtomatika emas. Bu ma'lumotlarga asoslangan strategik platforma bo'lib, barcha ishtirokchilar uchun yuqori qiymat yaratadi.</p>
+        </div>
 
-<div class="loader" id="loader">
-AI tizimga ulanmoqda...
-</div>
+        <div class="value-grid">
+            <!-- Fermerlar uchun -->
+            <div class="value-card reveal reveal-delay-1">
+                <div class="value-icon"><i class="fas fa-leaf"></i></div>
+                <h3>Fermerlar va Xo'jaliklar</h3>
+                <p>An'anaviy taxminlarga emas, balki real raqamlarga tayanib ishlang. Tuproq va o'simlikning asl holatini ko'ring.</p>
+                <ul class="value-list">
+                    <li><i class="fas fa-check"></i> Ortiqcha sug'orish va suv isrofining oldini olish</li>
+                    <li><i class="fas fa-check"></i> Nasoslar va energiya sarfini optimallashtirish</li>
+                    <li><i class="fas fa-check"></i> O'simlik stressini tashqi belgilaridan oldin aniqlash</li>
+                    <li><i class="fas fa-check"></i> Bir maydon ichidagi zonalarni alohida boshqarish</li>
+                </ul>
+            </div>
 
-<div class="footer">
-AI Dehqon • <span>Agro Intelligence Platform</span>
-</div>
+            <!-- Investorlar uchun -->
+            <div class="value-card reveal reveal-delay-2">
+                <div class="value-icon"><i class="fas fa-chart-line"></i></div>
+                <h3>Investorlar va Hamkorlar</h3>
+                <p>Barqaror va kengayuvchi (scalable) agrotexnologiya bozoriga qadam. Loyiha faqat bugun uchun emas, kelajak uchun qurilgan.</p>
+                <ul class="value-list">
+                    <li><i class="fas fa-check"></i> Raqamli qishloq xoʻjaligining (Digital Agriculture) zamonaviy trendi</li>
+                    <li><i class="fas fa-check"></i> Resurslarni tejash hisobiga yuqori iqtisodiy rentabellik (ROI)</li>
+                    <li><i class="fas fa-check"></i> Platforma arxitekturasi: dron va robotlarni qo'shish imkoniyati</li>
+                    <li><i class="fas fa-check"></i> Global iqlim o'zgarishi va suv tanqisligiga qarshi samarali yechim</li>
+                </ul>
+            </div>
 
-<div class="author">
-Loyiha muallifi: <span>Musayev Fayzullo</span>
-</div>
+            <!-- Texnologiya -->
+            <div class="value-card reveal reveal-delay-3">
+                <div class="value-icon"><i class="fas fa-microchip"></i></div>
+                <h3>Texnologik Infratuzilma</h3>
+                <p>IoT sensorlar, sun'iy intellekt va bulutli hisoblashlar birlashgan yagona ekotizim.</p>
+                <ul class="value-list">
+                    <li><i class="fas fa-check"></i> 50+ turdagi sensorlar bilan integratsiya</li>
+                    <li><i class="fas fa-check"></i> Real vaqtda ma'lumotlar oqimi</li>
+                    <li><i class="fas fa-check"></i> Avtomatik hisobot va tavsiyalar</li>
+                    <li><i class="fas fa-check"></i> API orqali uchinchi tomon xizmatlari bilan ulanish</li>
+                </ul>
+            </div>
+        </div>
 
-</div>
+        <div class="stats-container reveal">
+            <div class="stat-box">
+                <div class="icon"><i class="fas fa-cloud-sun"></i></div>
+                <h4>24/7</h4>
+                <p>Doimiy monitoring</p>
+            </div>
+            <div class="stat-box">
+                <div class="icon"><i class="fas fa-brain"></i></div>
+                <h4>AI</h4>
+                <p>Intellektual tahlil</p>
+            </div>
+            <div class="stat-box">
+                <div class="icon"><i class="fas fa-database"></i></div>
+                <h4>100%</h4>
+                <p>Ma'lumotga asoslangan qaror</p>
+            </div>
+            <div class="stat-box">
+                <div class="icon"><i class="fas fa-shield-alt"></i></div>
+                <h4>SSL</h4>
+                <p>Xavfsiz ma'lumotlar</p>
+            </div>
+        </div>
+    </section>
 
-<script>
+    <!-- ARCHITECTURE -->
+    <section>
+        <div class="section-header reveal">
+            <span class="tag">Texnologiya</span>
+            <h2>Texnologik Arxitektura</h2>
+            <p>Platforma doimiy rivojlanish uchun qurilgan. Har bir yangi modul tizimning umumiy aqlini (IQ) oshirib boradi.</p>
+        </div>
 
-/* typing animation */
-// ========== QO'SHIMCHA HIMOYA KODI ==========
-// Buni sizning mavjud kodingizdan keyin yoki oldin qo'shing
+        <div class="arch-grid">
+            <div class="arch-card reveal reveal-delay-1">
+                <div class="icon"><i class="fas fa-brain"></i></div>
+                <h3>Mashinali O'rganish (ML)</h3>
+                <p>Tizim ma'lumot yig'ish orqali umumiy modeldan lokal (aynan sizning dalangiz) sharoitiga moslashadi. Har bir qaror avvalgisidan aniqroq bo'ladi.</p>
+            </div>
+            <div class="arch-card reveal reveal-delay-2">
+                <div class="icon"><i class="fas fa-project-diagram"></i></div>
+                <h3>Yopiq Siklli Boshqaruv</h3>
+                <p>Faqatgina buyruq bermaydi. Tizim o'z ishining natijasini (masalan, sug'orishdan keyingi namlikni) qayta tekshiradi va xatolarni tuzatadi.</p>
+            </div>
+            <div class="arch-card reveal reveal-delay-3">
+                <div class="icon"><i class="fas fa-cubes"></i></div>
+                <h3>Taqsimlangan Arxitektura</h3>
+                <p>Markaziy AI barcha ma'lumotlarni tahlil qiladi. Kelajakda tizimga zararkunandalar diagnostikasi yoki hosilni yig'ish tizimlarini ulash mumkin.</p>
+            </div>
+            <div class="arch-card reveal reveal-delay-4">
+                <div class="icon"><i class="fas fa-cloud"></i></div>
+                <h3>Bulutli Infratuzilma</h3>
+                <p>Ma'lumotlar xavfsiz saqlanadi va istalgan qurilmadan real vaqtda kuzatish imkoniyati mavjud. Dasturiy ta'minot doimiy yangilanib turadi.</p>
+            </div>
+        </div>
+    </section>
 
-(function() {
-    // 1. Drag va Drop ni bloklash (rasmlarni sudrab olishni oldini olish)
-    document.addEventListener('dragstart', function(e) {
-        e.preventDefault();
-        return false;
-    });
-    
-    // 2. Copy, Cut, Paste ni bloklash
-    document.addEventListener('copy', function(e) {
-        e.preventDefault();
-        alert('Nusxa olish bloklangan!');
-        return false;
-    });
-    
-    document.addEventListener('cut', function(e) {
-        e.preventDefault();
-        return false;
-    });
-    
-    document.addEventListener('paste', function(e) {
-        e.preventDefault();
-        return false;
-    });
-    
-    // 3. Print screen (PrtSc) va boshqa tugmalarni bloklash
-    document.addEventListener('keyup', function(e) {
-        if (e.key === 'PrintScreen') {
-            navigator.clipboard.writeText('');
-            alert('Screenshot olish bloklangan!');
-        }
-    });
-    
-    // 4. Konsolni tozalashni oldini olish
-    const originalClear = console.clear;
-    console.clear = function() {
-        // Hech narsa qilma yoki xabar chiqar
-        console.log('Console clear bloklangan!');
-    };
-    
-    // 5. Element inspect ni bloklash (qo'shimcha)
-    document.addEventListener('keydown', function(e) {
-        // Ctrl + Shift + C (element inspect)
-        if (e.ctrlKey && e.shiftKey && e.key === 'C') {
-            e.preventDefault();
-            return false;
-        }
-        
-        // Ctrl + Shift + K (Web console Firefox)
-        if (e.ctrlKey && e.shiftKey && e.key === 'K') {
-            e.preventDefault();
-            return false;
-        }
-    });
-    
-    // 6. DevTools ni aniqlashning yana bir usuli
-    function detectDevTools() {
-        const element = new Image();
-        Object.defineProperty(element, 'id', {
-            get: function() {
-                // DevTools ochilgan
-                document.body.innerHTML = '<h1 style="color:red">Himoya tizimi faollashdi!</h1>';
-                window.location.href = 'about:blank';
+    <!-- FOOTER -->
+    <footer id="contact">
+        <div class="footer-grid">
+            <div class="footer-brand reveal">
+                <div class="logo">
+                    <i class="fas fa-seedling"></i>
+                    AI<span>Dehqon</span>
+                </div>
+                <p>Dehqonni almashtirmaydi, balki uning qarorini ma'lumotlar bilan kuchaytiradi. Qishloq xoʻjaligida yangi madaniyatni shakllantiramiz.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Telegram"><i class="fab fa-telegram-plane"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-col reveal">
+                <h4>Havolalar</h4>
+                <ul>
+                    <li><a href="#home">Bosh sahifa</a></li>
+                    <li><a href="#solutions">Yechimlar</a></li>
+                    <li><a href="#contact">Bog'lanish</a></li>
+                    <li><a href="#">Blog</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col reveal">
+                <h4>Bog'lanish</h4>
+                <ul>
+                    <li><a href="https://t.me/aidehqon" target="_blank"><i class="fab fa-telegram-plane"></i> @aidehqon</a></li>
+                    <li><a href="tel:+998200040509"><i class="fas fa-phone-alt"></i> +998 20 004 05 09</a></li>
+                    <li><a href="mailto:fayzullomusayev@outlook.com"><i class="fas fa-envelope"></i> fayzullomusayev@outlook.com</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            &copy; 2026 AI Dehqon. Barcha huquqlar himoyalangan. <br>
+            Loyiha muallifi va dasturchi: <span>Fayzullo Musayev</span>
+        </div>
+    </footer>
+
+    <!-- LOGIN MODAL -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="login-box">
+            <button class="close-modal" onclick="closeModal()">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div class="login-header">
+                <div class="icon"><i class="fas fa-seedling"></i></div>
+                <h2>Xush kelibsiz</h2>
+                <p>AI Dehqon tizimiga kiring</p>
+            </div>
+
+            <form id="loginForm" onsubmit="return handleLogin(event)">
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="username" placeholder="Login yoki email" required>
+                </div>
+
+                <div class="input-group">
+                    <i class="fas fa-key"></i>
+                    <input type="password" id="password" placeholder="Parol" required>
+                </div>
+
+                <div class="login-options">
+                    <label>
+                        <input type="checkbox" checked> Eslab qol
+                    </label>
+                    <a href="#">Parolni unutdingizmi?</a>
+                </div>
+
+                <button type="submit" class="login-submit">
+                    <i class="fas fa-arrow-right"></i> Kirish
+                </button>
+
+                <div class="login-error" id="loginError">
+                    <i class="fas fa-exclamation-circle"></i> Ruxsat etilmagan foydalanuvchi!
+                </div>
+
+                <div class="signup-link">
+                    Hisobingiz yo'qmi? <a href="#">Ro'yxatdan o'tish</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // ========== NAVBAR SCROLL ==========
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
             }
         });
-        console.log(element);
-    }
-    
-    // Har 2 sekundda tekshir
-    setInterval(detectDevTools, 2000);
-    
-    // 7. Selection (matn tanlash) ni butunlay bloklash
-    document.body.style.userSelect = 'none';
-    document.body.style.webkitUserSelect = 'none';
-    document.body.style.msUserSelect = 'none';
-    document.body.style.mozUserSelect = 'none';
-    
-    // 8. Kontekst menyuning boshqa variantlari
-    window.oncontextmenu = function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        return false;
-    };
-    
-    // 9. Touch qurilmalar uchun (uzun bosish menyusi)
-    document.addEventListener('touchstart', function(e) {
-        if (e.touches.length === 1 && e.touches[0].target) {
-            let timer;
-            timer = setTimeout(function() {
-                e.preventDefault();
+
+        // ========== MODAL ==========
+        const modal = document.getElementById('loginModal');
+
+        function openModal() {
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            document.getElementById('loginError').style.display = 'none';
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        // ========== LOGIN HANDLER ==========
+        function handleLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorEl = document.getElementById('loginError');
+
+            // Demo credentials
+            if (username === 'admin' && password === 'admin123') {
+                window.location.href = 'dashboard.html';
                 return false;
-            }, 500);
-            
-            document.addEventListener('touchend', function() {
-                clearTimeout(timer);
+            } else {
+                errorEl.style.display = 'block';
+                return false;
+            }
+        }
+
+        // ========== SCROLL REVEAL ==========
+        function revealOnScroll() {
+            const reveals = document.querySelectorAll('.reveal');
+            const windowHeight = window.innerHeight;
+            const threshold = 100;
+
+            reveals.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < windowHeight - threshold) {
+                    el.classList.add('active');
+                }
             });
         }
-    });
-    
-    // 10. Sahifa manbasini ko'rishni qiyinlashtirish (minify qilingan kod uchun)
-    if (window.name !== 'protected') {
-        window.name = 'protected';
-        // Bu sahifani iframe orqali ochishga urinishni bloklaydi
-        if (window.top !== window.self) {
-            window.top.location = window.self.location;
+
+        window.addEventListener('scroll', revealOnScroll);
+        window.addEventListener('load', () => {
+            revealOnScroll();
+            animateNumbers();
+        });
+
+        // ========== ANIMATE NUMBERS ==========
+        function animateNumbers() {
+            const stats = document.querySelectorAll('.hero-stat .number');
+            stats.forEach(stat => {
+                const target = parseInt(stat.getAttribute('data-count'));
+                let current = 0;
+                const increment = target / 60;
+                const duration = 2000;
+                const stepTime = duration / 60;
+
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        stat.textContent = target + '+';
+                        clearInterval(timer);
+                    } else {
+                        stat.textContent = Math.floor(current);
+                    }
+                }, stepTime);
+            });
         }
-    }
-    
-    console.log('%c⚠️ Himoya tizimi faollashtirilgan!', 'color: red; font-size: 16px');
-    console.log('%cDeveloper Tools bloklangan!', 'color: orange; font-size: 14px');
-  
-})();
-  ///Himoya uchun 
 
-const text="AI Dehqon AgroOS — dalani sun’iy intellekt bilan boshqaradigan aqlli tizim. Sensor va iqlim ma’lumotlarini tahlil qilib, real vaqt rejimida qaror qabul qiladi, hosildorlikni oshiradi va resurslarni tejaydi.";
+        // ========== NETWORK CANVAS (Advanced) ==========
+        const canvas = document.getElementById('network-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+        let mouse = { x: null, y: null, radius: 150 };
 
-let i=0;
-let isDeleting = false;
+        function resizeCanvas() {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+            width = canvas.width;
+            height = canvas.height;
+        }
 
-function type(){
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
 
-if(!isDeleting && i < text.length){
-document.getElementById("typing").innerHTML += text.charAt(i);
-i++;
-setTimeout(type,25);
-}
-else if(i >= text.length && !isDeleting){
-isDeleting = true;
-setTimeout(type,3000);
-}
-else if(isDeleting && i > 0){
-let currentText = document.getElementById("typing").innerHTML;
-document.getElementById("typing").innerHTML = currentText.slice(0, -1);
-i--;
-setTimeout(type,15);
-}
-else if(isDeleting && i === 0){
-isDeleting = false;
-setTimeout(type,500);
-}
-}
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.speedY = (Math.random() - 0.5) * 0.5;
+                this.opacity = Math.random() * 0.5 + 0.2;
+            }
 
-type();
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
 
-/* network animation */
+                if (this.x > width) this.x = 0;
+                else if (this.x < 0) this.x = width;
+                if (this.y > height) this.y = 0;
+                else if (this.y < 0) this.y = height;
 
-const canvas=document.getElementById("network");
-const ctx=canvas.getContext("2d");
+                // Mouse interaction
+                if (mouse.x !== null) {
+                    const dx = mouse.x - this.x;
+                    const dy = mouse.y - this.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < mouse.radius) {
+                        const force = (mouse.radius - dist) / mouse.radius;
+                        this.x -= dx * force * 0.02;
+                        this.y -= dy * force * 0.02;
+                    }
+                }
+            }
 
-function resize(){
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
-}
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(34, 197, 94, ${this.opacity})`;
+                ctx.fill();
+            }
+        }
 
-resize();
-window.addEventListener("resize",resize);
+        const particleCount = Math.min(120, Math.floor((width * height) / 8000));
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
 
-let nodes=[];
+        function drawLines() {
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    const maxDist = 150;
 
-for(let i=0;i<60;i++){
+                    if (dist < maxDist) {
+                        const opacity = 0.12 * (1 - dist / maxDist);
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(34, 197, 94, ${opacity})`;
+                        ctx.lineWidth = 0.8;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
 
-nodes.push({
-x:Math.random()*canvas.width,
-y:Math.random()*canvas.height,
-vx:(Math.random()-0.5)*0.4,
-vy:(Math.random()-0.5)*0.4
-});
+        function animateNetwork() {
+            ctx.clearRect(0, 0, width, height);
 
-}
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
 
-function animate(){
+            drawLines();
+            requestAnimationFrame(animateNetwork);
+        }
 
-ctx.clearRect(0,0,canvas.width,canvas.height);
+        animateNetwork();
 
-nodes.forEach(a=>{
+        // Mouse tracking
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            mouse.x = e.clientX - rect.left;
+            mouse.y = e.clientY - rect.top;
+        });
 
-a.x+=a.vx;
-a.y+=a.vy;
+        canvas.addEventListener('mouseleave', () => {
+            mouse.x = null;
+            mouse.y = null;
+        });
 
-// Bounce off edges
-if(a.x < 0 || a.x > canvas.width) a.vx *= -1;
-if(a.y < 0 || a.y > canvas.height) a.vy *= -1;
-
-ctx.fillStyle="#22c55e";
-
-ctx.beginPath();
-ctx.arc(a.x,a.y,2,0,Math.PI*2);
-ctx.fill();
-
-nodes.forEach(b=>{
-
-let dx=a.x-b.x;
-let dy=a.y-b.y;
-
-let dist=Math.sqrt(dx*dx+dy*dy);
-
-if(dist<120){
-
-ctx.strokeStyle="rgba(34,197,94,0.15)";
-ctx.lineWidth=1;
-
-ctx.beginPath();
-ctx.moveTo(a.x,a.y);
-ctx.lineTo(b.x,b.y);
-ctx.stroke();
-
-}
-
-});
-
-});
-
-requestAnimationFrame(animate);
-
-}
-
-animate();
-
-/* login */
-
-function login(){
-
-let u=document.getElementById("user").value;
-let p=document.getElementById("pass").value;
-
-document.getElementById("loader").style.display="block";
-
-setTimeout(()=>{
-
-if(u==="agro" && p==="agro77"){
-
-sessionStorage.setItem("auth","true");
-window.location.href="index.html";
-
-}
-
-else{
-
-document.getElementById("loader").innerHTML="Login yoki parol noto‘g‘ri";
-
-}
-
-},800);
-
-}
-
-</script>
-
+        // ========== KEYBOARD SHORTCUT ==========
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                closeModal();
+            }
+            if (e.key === 'Enter' && !modal.classList.contains('active')) {
+                // Optional: open modal on Enter
+            }
+        });
+    </script>
 </body>
-</html>
+    </html>
