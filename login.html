@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AI Dehqon | AgroOS</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
+}
+
+body{
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+background:#0b0f14;
+color:white;
+overflow:hidden;
+}
+
+/* canvas background */
+
+#network{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+z-index:0;
+}
+
+/* card */
+
+.card{
+position:relative;
+width:90%;
+max-width:700px;
+padding:50px;
+border-radius:22px;
+background:rgba(20,25,32,0.85);
+backdrop-filter:blur(18px);
+border:1px solid #26303b;
+box-shadow:0 40px 120px rgba(0,0,0,0.7);
+z-index:2;
+}
+
+/* logo */
+
+.logo{
+text-align:center;
+font-size:2rem;
+font-weight:600;
+margin-bottom:10px;
+}
+
+.logo span{
+color:#22c55e;
+}
+
+/* system status */
+
+.status{
+display:flex;
+align-items:center;
+justify-content:center;
+gap:8px;
+font-size:13px;
+color:#94a3b8;
+margin-bottom:20px;
+}
+
+.dot{
+width:8px;
+height:8px;
+background:#22c55e;
+border-radius:50%;
+box-shadow:0 0 10px #22c55e;
+}
+
+/* quote - FIXED HEIGHT SOLUTION */
+
+.quote{
+background:#0f141b;
+border-left:4px solid #22c55e;
+padding:18px;
+border-radius:12px;
+margin-bottom:28px;
+font-size:14px;
+line-height:1.7;
+color:#cbd5e1;
+/* Fixed height to prevent layout shift */
+height:160px;
+overflow-y:auto;
+/* Custom scrollbar for better UX */
+scrollbar-width:thin;
+scrollbar-color:#22c55e #0f141b;
+}
+
+/* Webkit scrollbar styling (Chrome, Safari, Edge) */
+.quote::-webkit-scrollbar{
+width:4px;
+}
+
+.quote::-webkit-scrollbar-track{
+background:#0f141b;
+border-radius:10px;
+}
+
+.quote::-webkit-scrollbar-thumb{
+background:#22c55e;
+border-radius:10px;
+}
+
+/* input */
+
+.input{
+background:#0f141b;
+border:1px solid #2b3643;
+border-radius:12px;
+padding:14px;
+margin-bottom:18px;
+transition:.2s;
+}
+
+.input:focus-within{
+border-color:#22c55e;
+box-shadow:0 0 12px #22c55e40;
+}
+
+input{
+width:100%;
+background:none;
+border:none;
+outline:none;
+color:white;
+font-size:14px;
+}
+
+/* button */
+
+button{
+width:100%;
+padding:14px;
+border:none;
+border-radius:12px;
+background:linear-gradient(135deg,#22c55e,#16a34a);
+font-weight:700;
+cursor:pointer;
+transition:.25s;
+color:white;
+font-size:16px;
+}
+
+button:hover{
+transform:translateY(-2px);
+box-shadow:0 10px 30px #22c55e60;
+}
+
+/* loader */
+
+.loader{
+display:none;
+margin-top:12px;
+text-align:center;
+color:#94a3b8;
+font-size:13px;
+}
+
+/* footer */
+
+.footer{
+margin-top:18px;
+text-align:center;
+font-size:13px;
+color:#94a3b8;
+}
+
+.footer span{
+color:#22c55e;
+}
+
+/* author */
+
+.author{
+margin-top:6px;
+text-align:center;
+font-size:12px;
+color:#94a3b8;
+}
+
+.author span{
+color:#22c55e;
+font-weight:600;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<canvas id="network"></canvas>
+
+<div class="card">
+
+<div class="logo">
+AI<span>Dehqon</span>
+</div>
+
+<div class="status">
+<div class="dot"></div>
+AI System Online
+</div>
+
+<div class="quote">
+<span id="typing"></span>
+</div>
+
+<div class="input">
+<input id="user" placeholder="Login">
+</div>
+
+<div class="input">
+<input id="pass" type="password" placeholder="Parol">
+</div>
+
+<button onclick="login()">Kirish</button>
+
+<div class="loader" id="loader">
+AI tizimga ulanmoqda...
+</div>
+
+<div class="footer">
+AI Dehqon • <span>Agro Intelligence Platform</span>
+</div>
+
+<div class="author">
+Loyiha muallifi: <span>Musayev Fayzullo</span>
+</div>
+
+</div>
+
+<script>
+
+/* typing animation */
+// ========== QO'SHIMCHA HIMOYA KODI ==========
+// Buni sizning mavjud kodingizdan keyin yoki oldin qo'shing
+
+(function() {
+    // 1. Drag va Drop ni bloklash (rasmlarni sudrab olishni oldini olish)
+    document.addEventListener('dragstart', function(e) {
+        e.preventDefault();
+        return false;
+    });
+    
+    // 2. Copy, Cut, Paste ni bloklash
+    document.addEventListener('copy', function(e) {
+        e.preventDefault();
+        alert('Nusxa olish bloklangan!');
+        return false;
+    });
+    
+    document.addEventListener('cut', function(e) {
+        e.preventDefault();
+        return false;
+    });
+    
+    document.addEventListener('paste', function(e) {
+        e.preventDefault();
+        return false;
+    });
+    
+    // 3. Print screen (PrtSc) va boshqa tugmalarni bloklash
+    document.addEventListener('keyup', function(e) {
+        if (e.key === 'PrintScreen') {
+            navigator.clipboard.writeText('');
+            alert('Screenshot olish bloklangan!');
+        }
+    });
+    
+    // 4. Konsolni tozalashni oldini olish
+    const originalClear = console.clear;
+    console.clear = function() {
+        // Hech narsa qilma yoki xabar chiqar
+        console.log('Console clear bloklangan!');
+    };
+    
+    // 5. Element inspect ni bloklash (qo'shimcha)
+    document.addEventListener('keydown', function(e) {
+        // Ctrl + Shift + C (element inspect)
+        if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Ctrl + Shift + K (Web console Firefox)
+        if (e.ctrlKey && e.shiftKey && e.key === 'K') {
+            e.preventDefault();
+            return false;
+        }
+    });
+    
+    // 6. DevTools ni aniqlashning yana bir usuli
+    function detectDevTools() {
+        const element = new Image();
+        Object.defineProperty(element, 'id', {
+            get: function() {
+                // DevTools ochilgan
+                document.body.innerHTML = '<h1 style="color:red">Himoya tizimi faollashdi!</h1>';
+                window.location.href = 'about:blank';
+            }
+        });
+        console.log(element);
+    }
+    
+    // Har 2 sekundda tekshir
+    setInterval(detectDevTools, 2000);
+    
+    // 7. Selection (matn tanlash) ni butunlay bloklash
+    document.body.style.userSelect = 'none';
+    document.body.style.webkitUserSelect = 'none';
+    document.body.style.msUserSelect = 'none';
+    document.body.style.mozUserSelect = 'none';
+    
+    // 8. Kontekst menyuning boshqa variantlari
+    window.oncontextmenu = function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+    };
+    
+    // 9. Touch qurilmalar uchun (uzun bosish menyusi)
+    document.addEventListener('touchstart', function(e) {
+        if (e.touches.length === 1 && e.touches[0].target) {
+            let timer;
+            timer = setTimeout(function() {
+                e.preventDefault();
+                return false;
+            }, 500);
+            
+            document.addEventListener('touchend', function() {
+                clearTimeout(timer);
+            });
+        }
+    });
+    
+    // 10. Sahifa manbasini ko'rishni qiyinlashtirish (minify qilingan kod uchun)
+    if (window.name !== 'protected') {
+        window.name = 'protected';
+        // Bu sahifani iframe orqali ochishga urinishni bloklaydi
+        if (window.top !== window.self) {
+            window.top.location = window.self.location;
+        }
+    }
+    
+    console.log('%c⚠️ Himoya tizimi faollashtirilgan!', 'color: red; font-size: 16px');
+    console.log('%cDeveloper Tools bloklangan!', 'color: orange; font-size: 14px');
+  
+})();
+  ///Himoya uchun 
+
+const text="AI Dehqon AgroOS — dalani sun’iy intellekt bilan boshqaradigan aqlli tizim. Sensor va iqlim ma’lumotlarini tahlil qilib, real vaqt rejimida qaror qabul qiladi, hosildorlikni oshiradi va resurslarni tejaydi.";
+
+let i=0;
+let isDeleting = false;
+
+function type(){
+
+if(!isDeleting && i < text.length){
+document.getElementById("typing").innerHTML += text.charAt(i);
+i++;
+setTimeout(type,25);
+}
+else if(i >= text.length && !isDeleting){
+isDeleting = true;
+setTimeout(type,3000);
+}
+else if(isDeleting && i > 0){
+let currentText = document.getElementById("typing").innerHTML;
+document.getElementById("typing").innerHTML = currentText.slice(0, -1);
+i--;
+setTimeout(type,15);
+}
+else if(isDeleting && i === 0){
+isDeleting = false;
+setTimeout(type,500);
+}
+}
+
+type();
+
+/* network animation */
+
+const canvas=document.getElementById("network");
+const ctx=canvas.getContext("2d");
+
+function resize(){
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+}
+
+resize();
+window.addEventListener("resize",resize);
+
+let nodes=[];
+
+for(let i=0;i<60;i++){
+
+nodes.push({
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+vx:(Math.random()-0.5)*0.4,
+vy:(Math.random()-0.5)*0.4
+});
+
+}
+
+function animate(){
+
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+nodes.forEach(a=>{
+
+a.x+=a.vx;
+a.y+=a.vy;
+
+// Bounce off edges
+if(a.x < 0 || a.x > canvas.width) a.vx *= -1;
+if(a.y < 0 || a.y > canvas.height) a.vy *= -1;
+
+ctx.fillStyle="#22c55e";
+
+ctx.beginPath();
+ctx.arc(a.x,a.y,2,0,Math.PI*2);
+ctx.fill();
+
+nodes.forEach(b=>{
+
+let dx=a.x-b.x;
+let dy=a.y-b.y;
+
+let dist=Math.sqrt(dx*dx+dy*dy);
+
+if(dist<120){
+
+ctx.strokeStyle="rgba(34,197,94,0.15)";
+ctx.lineWidth=1;
+
+ctx.beginPath();
+ctx.moveTo(a.x,a.y);
+ctx.lineTo(b.x,b.y);
+ctx.stroke();
+
+}
+
+});
+
+});
+
+requestAnimationFrame(animate);
+
+}
+
+animate();
+
+/* login */
+
+function login(){
+
+let u=document.getElementById("user").value;
+let p=document.getElementById("pass").value;
+
+document.getElementById("loader").style.display="block";
+
+setTimeout(()=>{
+
+if(u==="agro" && p==="agro77"){
+
+sessionStorage.setItem("auth","true");
+window.location.href="index.html";
+
+}
+
+else{
+
+document.getElementById("loader").innerHTML="Login yoki parol noto‘g‘ri";
+
+}
+
+},800);
+
+}
+
+</script>
+
+</body>
+</html>
