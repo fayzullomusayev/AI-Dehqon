@@ -4,268 +4,472 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-<title>AI Dehqon | AgroOS</title>
+<title>AI Dehqon | AgroOS Login</title>
+
+<!-- Google Fonts & FontAwesome 6 CDN -->
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
+:root {
+  --bg: #f4f7f5;
+  --card: #ffffff;
+  --accent-green: #10b981;
+  --accent-dark-green: #059669;
+  --warn: #f59e0b;
+  --err: #ef4444;
+  --text: #0f172a;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --gold: #d97706;
 }
 
-body{
-min-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-background:#0b0f14;
-color:white;
-overflow:hidden;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
-/* canvas background */
-
-#network{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-z-index:0;
+html, body {
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  background-color: var(--bg);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
-/* card */
-
-.card{
-position:relative;
-width:90%;
-max-width:700px;
-padding:50px;
-border-radius:22px;
-background:rgba(20,25,32,0.85);
-backdrop-filter:blur(18px);
-border:1px solid #26303b;
-box-shadow:0 40px 120px rgba(0,0,0,0.7);
-z-index:2;
+/* CANVAS BACKGROUND */
+#network {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  opacity: 0.6;
 }
 
-/* logo */
-
-.logo{
-text-align:center;
-font-size:2rem;
-font-weight:600;
-margin-bottom:10px;
+/* KONTENER & KARTA (TO'RTBURCHAK DESIGN) */
+.app-container {
+  width: 100%;
+  max-width: 440px;
+  height: 100%;
+  max-height: 880px;
+  background: rgba(244, 247, 245, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  border-radius: 0px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding: 16px;
+  z-index: 2;
 }
 
-.logo span{
-color:#22c55e;
+:fullscreen .app-container, :-webkit-full-screen .app-container {
+  max-height: 100dvh;
+  height: 100dvh;
+  border-radius: 0;
+  border: none;
 }
 
-/* system status */
-
-.status{
-display:flex;
-align-items:center;
-justify-content:center;
-gap:8px;
-font-size:13px;
-color:#94a3b8;
-margin-bottom:20px;
+.card {
+  position: relative;
+  width: 100%;
+  padding: 18px;
+  border-radius: 8px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  z-index: 2;
+  overflow-y: auto;
+  max-height: 100%;
 }
 
-.dot{
-width:8px;
-height:8px;
-background:#22c55e;
-border-radius:50%;
-box-shadow:0 0 10px #22c55e;
+.card::-webkit-scrollbar {
+  width: 3px;
+}
+.card::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
 }
 
-/* quote - FIXED HEIGHT SOLUTION */
-
-.quote{
-background:#0f141b;
-border-left:4px solid #22c55e;
-padding:18px;
-border-radius:12px;
-margin-bottom:28px;
-font-size:14px;
-line-height:1.7;
-color:#cbd5e1;
-/* Fixed height to prevent layout shift */
-height:160px;
-overflow-y:auto;
-/* Custom scrollbar for better UX */
-scrollbar-width:thin;
-scrollbar-color:#22c55e #0f141b;
+/* LOGO */
+.logo {
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin-bottom: 4px;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
-/* Webkit scrollbar styling (Chrome, Safari, Edge) */
-.quote::-webkit-scrollbar{
-width:4px;
+.logo i {
+  color: var(--accent-dark-green);
+  font-size: 1.5rem;
 }
 
-.quote::-webkit-scrollbar-track{
-background:#0f141b;
-border-radius:10px;
+.logo span {
+  color: var(--accent-dark-green);
 }
 
-.quote::-webkit-scrollbar-thumb{
-background:#22c55e;
-border-radius:10px;
+/* SYSTEM STATUS */
+.status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--accent-dark-green);
+  margin-bottom: 12px;
+  background: #ecfdf5;
+  padding: 3px 10px;
+  border-radius: 4px;
+  border: 1px solid #a7f3d0;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* input */
-
-.input{
-background:#0f141b;
-border:1px solid #2b3643;
-border-radius:12px;
-padding:14px;
-margin-bottom:18px;
-transition:.2s;
+.dot {
+  width: 6px;
+  height: 6px;
+  background: var(--accent-green);
+  border-radius: 50%;
+  box-shadow: 0 0 6px var(--accent-green);
+  animation: pulse 1.8s infinite;
 }
 
-.input:focus-within{
-border-color:#22c55e;
-box-shadow:0 0 12px #22c55e40;
+@keyframes pulse {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.3); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.8; }
 }
 
-input{
-width:100%;
-background:none;
-border:none;
-outline:none;
-color:white;
-font-size:14px;
+/* AI MATNI (KATTALASHTIRILGAN WIDGET) */
+.quote {
+  background: #f8fafc;
+  border-left: 4px solid var(--accent-green);
+  padding: 14px;
+  border-radius: 6px;
+  margin-bottom: 14px;
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--text);
+  font-weight: 600;
+  height: 120px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-green) #f8fafc;
 }
 
-/* button */
-
-button{
-width:100%;
-padding:14px;
-border:none;
-border-radius:12px;
-background:linear-gradient(135deg,#22c55e,#16a34a);
-font-weight:700;
-cursor:pointer;
-transition:.25s;
-color:white;
-font-size:16px;
+.quote::-webkit-scrollbar {
+  width: 4px;
+}
+.quote::-webkit-scrollbar-thumb {
+  background: var(--accent-green);
+  border-radius: 4px;
 }
 
-button:hover{
-transform:translateY(-2px);
-box-shadow:0 10px 30px #22c55e60;
+/* INVESTOR REKLAMA BLOKI */
+.investor-box {
+  background: #f0fdf4;
+  border: 1px dashed #a7f3d0;
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 14px;
 }
 
-/* loader */
-
-.loader{
-display:none;
-margin-top:12px;
-text-align:center;
-color:#94a3b8;
-font-size:13px;
+.investor-title {
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--accent-dark-green);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
-/* footer */
-
-.footer{
-margin-top:18px;
-text-align:center;
-font-size:13px;
-color:#94a3b8;
+.investor-desc {
+  font-size: 10px;
+  color: #166534;
+  line-height: 1.35;
+  font-weight: 500;
+  margin-bottom: 8px;
 }
 
-.footer span{
-color:#22c55e;
+.investor-features {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
 }
 
-/* author */
-
-.author{
-margin-top:6px;
-text-align:center;
-font-size:12px;
-color:#94a3b8;
+.badge-item {
+  background: #ffffff;
+  border: 1px solid #bbf7d0;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--accent-dark-green);
 }
 
-.author span{
-color:#22c55e;
-font-weight:600;
+.investor-contact {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+}
+
+.contact-label {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.contact-email {
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--accent-dark-green);
+  text-decoration: none;
+}
+
+.contact-email:hover {
+  text-decoration: underline;
+}
+
+/* INPUT FIELDLAR (LOGIN / PAROL) */
+.input-group {
+  margin-bottom: 10px;
+}
+
+.input {
+  background: #f8fafc;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 9px 11px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.input i {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.input:focus-within {
+  border-color: var(--accent-green);
+  background: #ffffff;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.15);
+}
+
+.input:focus-within i {
+  color: var(--accent-dark-green);
+}
+
+input {
+  width: 100%;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* BUTTON */
+button {
+  width: 100%;
+  padding: 11px;
+  border: none;
+  border-radius: 6px;
+  background: var(--accent-green);
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #ffffff;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+}
+
+button:hover {
+  background: var(--accent-dark-green);
+}
+
+/* LOADER */
+.loader {
+  display: none;
+  margin-top: 8px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+/* FOOTER & AUTHOR */
+.footer {
+  margin-top: 12px;
+  text-align: center;
+  font-size: 9px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.footer span {
+  color: var(--accent-dark-green);
+  font-weight: 700;
+}
+
+.author {
+  margin-top: 3px;
+  text-align: center;
+  font-size: 9px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.author span {
+  color: var(--gold);
+  font-weight: 800;
 }
 
 </style>
 
 </head>
 
-<body>
+<body onclick="enableFullscreen()">
 
 <canvas id="network"></canvas>
 
-<div class="card">
+<div class="app-container">
+  <div class="card">
 
-<div class="logo">
-AI<span>Dehqon</span>
-</div>
+    <div class="logo">
+      <i class="fa-solid fa-seedling"></i>
+      AI<span>Dehqon</span>
+    </div>
 
-<div class="status">
-<div class="dot"></div>
-AI System Online
-</div>
+    <div class="status">
+      <div class="dot"></div>
+      AI System Online
+    </div>
 
-<div class="quote">
-<span id="typing"></span>
-</div>
+    <!-- AI TERILAYOTGAN MATN BLOKI (KATTALASHTIRILGAN) -->
+    <div class="quote">
+      <span id="typing"></span>
+    </div>
 
-<div class="input">
-<input id="user" placeholder="Login">
-</div>
+    <!-- INVESTORLAR UCHUN REKLAMA BLOKI -->
+    <div class="investor-box">
+      <div class="investor-title">
+        <i class="fa-solid fa-chart-line"></i> Investorlar va Hamkorlar uchun
+      </div>
+      <div class="investor-desc">
+        <b>AI Dehqon</b> — qishloq xo'jaligini sun'iy intellekt va IoT sensorlar yordamida avtomatlashtiruvchi ekotizim. Suv sarfini 35% ga tejaydi, hosildorlikni oshiradi va xavflarni oldindan bashorat qiladi.
+      </div>
+      <div class="investor-features">
+        <span class="badge-item"><i class="fa-solid fa-droplet"></i> 35% Suv Tejamkorligi</span>
+        <span class="badge-item"><i class="fa-solid fa-brain"></i> Real-Time AI</span>
+        <span class="badge-item"><i class="fa-solid fa-microchip"></i> LoRaWAN IoT</span>
+      </div>
+      <div class="investor-contact">
+        <span class="contact-label"><i class="fa-solid fa-envelope"></i> Murojaat uchun:</span>
+        <a href="mailto:fayzullomusayev@outlook.com" class="contact-email">fayzullomusayev@outlook.com</a>
+      </div>
+    </div>
 
-<div class="input">
-<input id="pass" type="password" placeholder="Parol">
-</div>
+    <!-- LOGIN / PAROL -->
+    <div class="input-group">
+      <div class="input">
+        <i class="fa-solid fa-user"></i>
+        <input id="user" placeholder="Login" autocomplete="off">
+      </div>
+    </div>
 
-<button onclick="login()">Kirish</button>
+    <div class="input-group">
+      <div class="input">
+        <i class="fa-solid fa-lock"></i>
+        <input id="pass" type="password" placeholder="Parol">
+      </div>
+    </div>
 
-<div class="loader" id="loader">
-AI tizimga ulanmoqda...
-</div>
+    <button onclick="login(); event.stopPropagation();">
+      <span>TIZIMGA KIRISH</span>
+      <i class="fa-solid fa-arrow-right"></i>
+    </button>
 
-<div class="footer">
-AI Dehqon • <span>Agro Intelligence Platform</span>
-</div>
+    <div class="loader" id="loader">
+      <i class="fa-solid fa-circle-notch fa-spin"></i> AI tizimga ulanmoqda...
+    </div>
 
-<div class="author">
-Loyiha muallifi: <span>Musayev Fayzullo</span>
-</div>
+    <div class="footer">
+      AI Dehqon • <span>Agro Intelligence Platform</span>
+    </div>
 
+    <div class="author">
+      Loyiha muallifi: <span>Musayev Fayzullo</span>
+    </div>
+
+  </div>
 </div>
 
 <script>
 
-/* typing animation */
-// ========== QO'SHIMCHA HIMOYA KODI ==========
-// Buni sizning mavjud kodingizdan keyin yoki oldin qo'shing
+/* FULLSCREEN ON CLICK */
+function enableFullscreen() {
+  const elem = document.documentElement;
+  if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen().catch(err => console.log(err));
+    } else if (elem.webkitRequestFullscreen) {
+      elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) {
+      elem.msRequestFullscreen();
+    }
+  }
+}
 
+/* HIMOYA KODI (DEVTOOLS, COPY/PASTE & INSPECT BLOKLASH) */
 (function() {
-    // 1. Drag va Drop ni bloklash (rasmlarni sudrab olishni oldini olish)
     document.addEventListener('dragstart', function(e) {
         e.preventDefault();
         return false;
     });
     
-    // 2. Copy, Cut, Paste ni bloklash
     document.addEventListener('copy', function(e) {
         e.preventDefault();
-        alert('Nusxa olish bloklangan!');
         return false;
     });
     
@@ -279,225 +483,140 @@ Loyiha muallifi: <span>Musayev Fayzullo</span>
         return false;
     });
     
-    // 3. Print screen (PrtSc) va boshqa tugmalarni bloklash
     document.addEventListener('keyup', function(e) {
         if (e.key === 'PrintScreen') {
             navigator.clipboard.writeText('');
-            alert('Screenshot olish bloklangan!');
         }
     });
     
-    // 4. Konsolni tozalashni oldini olish
-    const originalClear = console.clear;
-    console.clear = function() {
-        // Hech narsa qilma yoki xabar chiqar
-        console.log('Console clear bloklangan!');
-    };
-    
-    // 5. Element inspect ni bloklash (qo'shimcha)
     document.addEventListener('keydown', function(e) {
-        // Ctrl + Shift + C (element inspect)
-        if (e.ctrlKey && e.shiftKey && e.key === 'C') {
-            e.preventDefault();
-            return false;
-        }
-        
-        // Ctrl + Shift + K (Web console Firefox)
-        if (e.ctrlKey && e.shiftKey && e.key === 'K') {
+        if (e.keyCode === 123 || 
+           (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.key === 'C' || e.key === 'K')) || 
+           (e.ctrlKey && e.keyCode === 85)) {
             e.preventDefault();
             return false;
         }
     });
     
-    // 6. DevTools ni aniqlashning yana bir usuli
-    function detectDevTools() {
-        const element = new Image();
-        Object.defineProperty(element, 'id', {
-            get: function() {
-                // DevTools ochilgan
-                document.body.innerHTML = '<h1 style="color:red">Himoya tizimi faollashdi!</h1>';
-                window.location.href = 'about:blank';
-            }
-        });
-        console.log(element);
-    }
-    
-    // Har 2 sekundda tekshir
-    setInterval(detectDevTools, 2000);
-    
-    // 7. Selection (matn tanlash) ni butunlay bloklash
     document.body.style.userSelect = 'none';
     document.body.style.webkitUserSelect = 'none';
-    document.body.style.msUserSelect = 'none';
-    document.body.style.mozUserSelect = 'none';
     
-    // 8. Kontekst menyuning boshqa variantlari
     window.oncontextmenu = function(e) {
         e.preventDefault();
         e.stopPropagation();
         return false;
     };
-    
-    // 9. Touch qurilmalar uchun (uzun bosish menyusi)
-    document.addEventListener('touchstart', function(e) {
-        if (e.touches.length === 1 && e.touches[0].target) {
-            let timer;
-            timer = setTimeout(function() {
-                e.preventDefault();
-                return false;
-            }, 500);
-            
-            document.addEventListener('touchend', function() {
-                clearTimeout(timer);
-            });
-        }
-    });
-    
-    // 10. Sahifa manbasini ko'rishni qiyinlashtirish (minify qilingan kod uchun)
-    if (window.name !== 'protected') {
-        window.name = 'protected';
-        // Bu sahifani iframe orqali ochishga urinishni bloklaydi
-        if (window.top !== window.self) {
-            window.top.location = window.self.location;
-        }
-    }
-    
-    console.log('%c⚠️ Himoya tizimi faollashtirilgan!', 'color: red; font-size: 16px');
-    console.log('%cDeveloper Tools bloklangan!', 'color: orange; font-size: 14px');
-  
 })();
-  ///Himoya uchun 
 
-const text="AI Dehqon AgroOS — dalani sun’iy intellekt bilan boshqaradigan aqlli tizim. Sensor va iqlim ma’lumotlarini tahlil qilib, real vaqt rejimida qaror qabul qiladi, hosildorlikni oshiradi va resurslarni tejaydi.";
+/* TYPING ANIMATION */
+const text = "AI Dehqon AgroOS — dalani sun’iy intellekt bilan boshqaradigan aqlli tizim. Sensor va iqlim ma’lumotlarini tahlil qilib, real vaqt rejimida qaror qabul qiladi, hosildorlikni oshiradi va resurslarni tejaydi.";
 
-let i=0;
+let i = 0;
 let isDeleting = false;
 
-function type(){
-
-if(!isDeleting && i < text.length){
-document.getElementById("typing").innerHTML += text.charAt(i);
-i++;
-setTimeout(type,25);
-}
-else if(i >= text.length && !isDeleting){
-isDeleting = true;
-setTimeout(type,3000);
-}
-else if(isDeleting && i > 0){
-let currentText = document.getElementById("typing").innerHTML;
-document.getElementById("typing").innerHTML = currentText.slice(0, -1);
-i--;
-setTimeout(type,15);
-}
-else if(isDeleting && i === 0){
-isDeleting = false;
-setTimeout(type,500);
-}
+function type() {
+  if (!isDeleting && i < text.length) {
+    document.getElementById("typing").innerHTML += text.charAt(i);
+    i++;
+    setTimeout(type, 25);
+  }
+  else if (i >= text.length && !isDeleting) {
+    isDeleting = true;
+    setTimeout(type, 3000);
+  }
+  else if (isDeleting && i > 0) {
+    let currentText = document.getElementById("typing").innerHTML;
+    document.getElementById("typing").innerHTML = currentText.slice(0, -1);
+    i--;
+    setTimeout(type, 15);
+  }
+  else if (isDeleting && i === 0) {
+    isDeleting = false;
+    setTimeout(type, 500);
+  }
 }
 
 type();
 
-/* network animation */
+/* NETWORK CANVAS ANIMATION */
+const canvas = document.getElementById("network");
+const ctx = canvas.getContext("2d");
 
-const canvas=document.getElementById("network");
-const ctx=canvas.getContext("2d");
-
-function resize(){
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
 }
 
 resize();
-window.addEventListener("resize",resize);
+window.addEventListener("resize", resize);
 
-let nodes=[];
+let nodes = [];
 
-for(let i=0;i<60;i++){
-
-nodes.push({
-x:Math.random()*canvas.width,
-y:Math.random()*canvas.height,
-vx:(Math.random()-0.5)*0.4,
-vy:(Math.random()-0.5)*0.4
-});
-
+for (let i = 0; i < 50; i++) {
+  nodes.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    vx: (Math.random() - 0.5) * 0.4,
+    vy: (Math.random() - 0.5) * 0.4
+  });
 }
 
-function animate(){
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-ctx.clearRect(0,0,canvas.width,canvas.height);
+  nodes.forEach(a => {
+    a.x += a.vx;
+    a.y += a.vy;
 
-nodes.forEach(a=>{
+    if (a.x < 0 || a.x > canvas.width) a.vx *= -1;
+    if (a.y < 0 || a.y > canvas.height) a.vy *= -1;
 
-a.x+=a.vx;
-a.y+=a.vy;
+    ctx.fillStyle = "#10b981";
+    ctx.beginPath();
+    ctx.arc(a.x, a.y, 2, 0, Math.PI * 2);
+    ctx.fill();
 
-// Bounce off edges
-if(a.x < 0 || a.x > canvas.width) a.vx *= -1;
-if(a.y < 0 || a.y > canvas.height) a.vy *= -1;
+    nodes.forEach(b => {
+      let dx = a.x - b.x;
+      let dy = a.y - b.y;
+      let dist = Math.sqrt(dx * dx + dy * dy);
 
-ctx.fillStyle="#22c55e";
+      if (dist < 120) {
+        ctx.strokeStyle = "rgba(16, 185, 129, 0.12)";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.stroke();
+      }
+    });
+  });
 
-ctx.beginPath();
-ctx.arc(a.x,a.y,2,0,Math.PI*2);
-ctx.fill();
-
-nodes.forEach(b=>{
-
-let dx=a.x-b.x;
-let dy=a.y-b.y;
-
-let dist=Math.sqrt(dx*dx+dy*dy);
-
-if(dist<120){
-
-ctx.strokeStyle="rgba(34,197,94,0.15)";
-ctx.lineWidth=1;
-
-ctx.beginPath();
-ctx.moveTo(a.x,a.y);
-ctx.lineTo(b.x,b.y);
-ctx.stroke();
-
-}
-
-});
-
-});
-
-requestAnimationFrame(animate);
-
+  requestAnimationFrame(animate);
 }
 
 animate();
 
-/* login */
+/* LOGIN LOGIC - index.html FAYLIGA YO'NALTIRISH */
+function login() {
+  let u = document.getElementById("user").value;
+  let p = document.getElementById("pass").value;
 
-function login(){
+  const loader = document.getElementById("loader");
+  loader.style.display = "block";
+  loader.style.color = "var(--text-muted)";
+  loader.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> AI tizimga ulanmoqda...`;
 
-let u=document.getElementById("user").value;
-let p=document.getElementById("pass").value;
-
-document.getElementById("loader").style.display="block";
-
-setTimeout(()=>{
-
-if(u==="agro" && p==="agro778"){
-
-sessionStorage.setItem("auth","true");
-window.location.href="index.html";
-
-}
-
-else{
-
-document.getElementById("loader").innerHTML="Login yoki parol noto‘g‘ri";
-
-}
-
-},800);
-
+  setTimeout(() => {
+    if (u === "agro" && p === "agro778") {
+      sessionStorage.setItem("auth", "true");
+      sessionStorage.setItem("authenticated", "true");
+      window.location.href = "index.html";
+    } else {
+      loader.style.color = "var(--err)";
+      loader.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Login yoki parol noto‘g‘ri`;
+    }
+  }, 800);
 }
 
 </script>
