@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>AI Dehqon | Smart Dala</title>
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#f4f7f5">
 
@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <script>
-    // AUTHENTICATION CHECK (login.html bilan moslashtirildi)
+    // AUTHENTICATION CHECK
     if (sessionStorage.getItem("authenticated") !== "true" && sessionStorage.getItem("auth") !== "true") {
       window.location.href = "login.html";
     }
@@ -70,7 +70,7 @@
       overflow: hidden;
     }
 
-    /* TO'RTBURCHAK ASOSIY KONTENER (BORDER-RADIUS: 0) */
+    /* KONTENER (RESPONSIVE STRUCTURE) */
     .app-container {
       width: 100%;
       max-width: 440px;
@@ -84,6 +84,7 @@
       flex-direction: column;
       position: relative;
       overflow: hidden;
+      transition: all 0.3s ease;
     }
 
     :fullscreen .app-container, :-webkit-full-screen .app-container {
@@ -280,7 +281,7 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      color: var(--text-muted);
+      color: var(--muted);
       font-size: 0.8rem;
       font-weight: 700;
       margin-bottom: 8px;
@@ -317,7 +318,7 @@
       border: 1px solid #a7f3d0;
       font-size: 0.75rem;
       font-weight: 600;
-      color: var(--text-muted);
+      color: var(--muted);
     }
 
     .metric-chip span {
@@ -336,7 +337,7 @@
     .prediction-item:last-child { border-bottom: none; }
 
     .prediction-label {
-      color: var(--text-muted);
+      color: var(--muted);
       font-size: 0.8rem;
       font-weight: 600;
     }
@@ -368,7 +369,7 @@
     .confidence-text {
       text-align: right;
       font-size: 0.75rem;
-      color: var(--text-muted);
+      color: var(--muted);
       margin-top: 4px;
       font-weight: 600;
     }
@@ -399,7 +400,7 @@
       color: #ffffff;
     }
 
-    /* KARTALAR (TO'RTBURCHAK DESIGN) */
+    /* KARTALAR */
     .card {
       background: var(--card);
       border-radius: 8px;
@@ -414,7 +415,7 @@
       align-items: center;
       gap: 6px;
       font-size: 0.75rem;
-      color: var(--text-muted);
+      color: var(--muted);
       margin-bottom: 6px;
       font-weight: 700;
     }
@@ -487,7 +488,7 @@
       display: flex;
       justify-content: space-between;
       font-size: 0.75rem;
-      color: var(--text-muted);
+      color: var(--muted);
       font-weight: 600;
     }
 
@@ -513,7 +514,7 @@
 
     .chart-title {
       font-size: 0.8rem;
-      color: var(--text-muted);
+      color: var(--muted);
       margin-bottom: 8px;
       text-align: center;
       font-weight: 700;
@@ -589,7 +590,7 @@
     }
 
     .profile-location {
-      color: var(--text-muted);
+      color: var(--muted);
       font-size: 0.8rem;
       display: flex;
       align-items: center;
@@ -614,7 +615,7 @@
 
     .stat-label {
       font-size: 0.7rem;
-      color: var(--text-muted);
+      color: var(--muted);
       font-weight: 600;
     }
 
@@ -644,7 +645,7 @@
     }
 
     .info-row:last-child { border-bottom: none; }
-    .info-label { color: var(--text-muted); font-weight: 600; }
+    .info-label { color: var(--muted); font-weight: 600; }
     .info-value { font-weight: 700; color: var(--text); }
 
     .settings-item {
@@ -663,10 +664,10 @@
       gap: 8px;
     }
 
-    .settings-info i { color: var(--text-muted); font-size: 14px; }
+    .settings-info i { color: var(--muted); font-size: 14px; }
 
     .settings-text h4 { font-size: 0.8rem; font-weight: 700; }
-    .settings-text p { font-size: 0.7rem; color: var(--text-muted); }
+    .settings-text p { font-size: 0.7rem; color: var(--muted); }
 
     /* TOGGLE SWITCH */
     .switch {
@@ -730,7 +731,7 @@
     .btn-secondary {
       background: #ffffff;
       border: 1px solid var(--border);
-      color: var(--text-muted);
+      color: var(--muted);
     }
 
     /* MODAL */
@@ -765,7 +766,7 @@
     }
 
     .modal-header h3 { font-size: 1.05rem; color: var(--accent-dark-green); font-weight: 800; }
-    .close-btn { background: none; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer; }
+    .close-btn { background: none; border: none; color: var(--muted); font-size: 20px; cursor: pointer; }
 
     .modal-input {
       width: 100%;
@@ -792,7 +793,7 @@
     }
 
     .modal-btn.save { background: var(--accent-green); color: white; border: none; }
-    .modal-btn.cancel { background: transparent; border: 1px solid var(--border); color: var(--text-muted); }
+    .modal-btn.cancel { background: transparent; border: 1px solid var(--border); color: var(--muted); }
 
     /* BOTTOM NAV */
     .bottom-nav {
@@ -816,7 +817,7 @@
       flex-direction: column;
       align-items: center;
       gap: 2px;
-      color: var(--text-muted);
+      color: var(--muted);
       font-size: 9px;
       font-weight: 700;
       cursor: pointer;
@@ -829,6 +830,93 @@
     .nav-item.active {
       color: var(--accent-dark-green);
       background: #ecfdf5;
+    }
+
+    /* DESKTOP VA KATTA EKRANLAR UCHUN ADAPTIV MEDIA QUERIES */
+    @media (min-width: 768px) {
+      .app-container {
+        max-width: 780px;
+        max-height: 90vh;
+        border-radius: 12px;
+      }
+
+      .minimal-header {
+        padding: 16px 24px;
+      }
+
+      .logo-icon {
+        width: 38px;
+        height: 38px;
+        font-size: 18px;
+      }
+
+      .logo-text {
+        font-size: 1.35rem;
+      }
+
+      .time-block, .battery-block {
+        height: 34px;
+        padding: 6px 14px;
+        font-size: 0.9rem;
+      }
+
+      .content-area {
+        padding: 20px;
+        padding-bottom: 80px;
+      }
+
+      .grid-container {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+      }
+
+      .ai-main {
+        flex-direction: row;
+      }
+
+      .ai-status-card, .ai-prediction-card {
+        flex: 1;
+      }
+
+      .title {
+        font-size: 0.85rem;
+      }
+
+      .value {
+        font-size: 1.75rem;
+      }
+
+      .value-index {
+        font-size: 1.6rem;
+      }
+
+      .charts-grid {
+        grid-template-columns: repeat(2, 1fr);
+        display: grid;
+      }
+
+      .chart-wrapper {
+        height: 160px;
+      }
+
+      .bottom-nav {
+        height: 64px;
+      }
+
+      .nav-item {
+        font-size: 11px;
+        padding: 6px 18px;
+      }
+
+      .nav-item i {
+        font-size: 18px;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .app-container {
+        max-width: 900px;
+      }
     }
   </style>
 </head>
@@ -1414,6 +1502,7 @@ function initCharts() {
   try {
     const energyCtx = document.getElementById('energyChart')?.getContext('2d');
     if (energyCtx) {
+      if (energyChart) energyChart.destroy();
       energyChart = new Chart(energyCtx, {
         type: 'line',
         data: {
@@ -1436,6 +1525,7 @@ function initCharts() {
 
     const stressCtx = document.getElementById('stressChart')?.getContext('2d');
     if (stressCtx) {
+      if (stressChart) stressChart.destroy();
       stressChart = new Chart(stressCtx, {
         type: 'bar',
         data: {
@@ -1456,6 +1546,7 @@ function initCharts() {
 
     const waterCtx = document.getElementById('waterChart')?.getContext('2d');
     if (waterCtx) {
+      if (waterChart) waterChart.destroy();
       waterChart = new Chart(waterCtx, {
         type: 'line',
         data: {
@@ -1477,6 +1568,7 @@ function initCharts() {
 
     const yieldCtx = document.getElementById('yieldChart')?.getContext('2d');
     if (yieldCtx) {
+      if (yieldChart) yieldChart.destroy();
       yieldChart = new Chart(yieldCtx, {
         type: 'line',
         data: {
@@ -1532,7 +1624,7 @@ function addInitialLogs() {
   });
 }
 
-// SIMULYATSIYA TAYMERI (REAL VAQT)
+// SIMULYATSIYA TAYMERI
 function startDemoInterval() {
   setInterval(() => {
     values.soil += Math.random() * 4 - 2;
