@@ -33,6 +33,8 @@
       --card-hover: #f8fafc;
       --accent-green: #10b981;
       --accent-dark-green: #059669;
+      --accent-light-green: #ecfdf5;
+      --accent-border-green: #a7f3d0;
       --warn: #f59e0b;
       --err: #ef4444;
       --text: #0f172a;
@@ -84,7 +86,7 @@
       flex-direction: column;
       position: relative;
       overflow: hidden;
-      transition: all 0.3s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     :fullscreen .app-container, :-webkit-full-screen .app-container {
@@ -188,16 +190,18 @@
     .content-area::-webkit-scrollbar { width: 4px; }
     .content-area::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
+    /* SCREEN DISPLAY AND ANIMATIONS */
     .screen {
       display: none;
-      animation: fadeIn 0.25s ease-in-out forwards;
+      opacity: 0;
+      transform: translateY(10px) scale(0.98);
+      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
-    .screen.active { display: block; }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
-      to { opacity: 1; transform: translateY(0); }
+    .screen.active { 
+      display: block; 
+      opacity: 1;
+      transform: translateY(0) scale(1);
     }
 
     .grid-container {
@@ -215,6 +219,7 @@
       border: 1px solid #bbf7d0;
       margin-bottom: 10px;
       position: relative;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
     .ai-header {
@@ -393,14 +398,21 @@
       justify-content: center;
       gap: 6px;
       cursor: pointer;
+      transition: all 0.2s ease;
     }
 
     .ai-action-btn:hover {
       background: var(--accent-green);
       color: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);
     }
 
-    /* KARTALAR */
+    .ai-action-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* INTERAKTIV KARTALAR VA MILTILLASH ANIMATSIYALARI */
     .card {
       background: var(--card);
       border-radius: 8px;
@@ -408,6 +420,34 @@
       border: 1px solid var(--border);
       box-shadow: 0 2px 6px rgba(0,0,0,0.02);
       position: relative;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .card:hover {
+      border-color: var(--accent-border-green);
+      background: var(--card-hover);
+      transform: translateY(-2px);
+    }
+
+    .card:active, .card.active-click {
+      animation: cardPulse 0.4s ease forwards;
+    }
+
+    @keyframes cardPulse {
+      0% {
+        transform: scale(0.96);
+        background-color: var(--accent-light-green);
+        border-color: var(--accent-green);
+      }
+      50% {
+        transform: scale(1.02);
+        background-color: #d1fae5;
+        box-shadow: 0 0 12px rgba(16, 185, 129, 0.3);
+      }
+      100% {
+        transform: scale(1);
+      }
     }
 
     .title {
@@ -510,6 +550,11 @@
       border-radius: 8px;
       padding: 12px;
       border: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+
+    .chart-card:hover {
+      border-color: var(--accent-border-green);
     }
 
     .chart-title {
@@ -549,6 +594,11 @@
       font-size: 0.8rem;
       line-height: 1.4;
       color: var(--text);
+      transition: all 0.2s ease;
+    }
+
+    .timeline-full div:hover {
+      background: var(--accent-light-green);
     }
 
     .timeline-full b { color: var(--accent-dark-green); }
@@ -720,6 +770,7 @@
       justify-content: center;
       gap: 6px;
       cursor: pointer;
+      transition: all 0.2s ease;
     }
 
     .btn-primary {
@@ -728,10 +779,18 @@
       border: none;
     }
 
+    .btn-primary:active {
+      transform: scale(0.96);
+    }
+
     .btn-secondary {
       background: #ffffff;
       border: 1px solid var(--border);
       color: var(--muted);
+    }
+
+    .btn-secondary:active {
+      transform: scale(0.96);
     }
 
     /* MODAL */
@@ -756,6 +815,12 @@
       max-width: 360px;
       width: 100%;
       border: 1px solid var(--border);
+      animation: modalSlide 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    @keyframes modalSlide {
+      from { transform: scale(0.85); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
     }
 
     .modal-header {
@@ -795,7 +860,7 @@
     .modal-btn.save { background: var(--accent-green); color: white; border: none; }
     .modal-btn.cancel { background: transparent; border: 1px solid var(--border); color: var(--muted); }
 
-    /* BOTTOM NAV */
+    /* BOTTOM NAV VA BOSISH ANIMATSIYALARI */
     .bottom-nav {
       position: absolute;
       bottom: 0;
@@ -816,20 +881,43 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 2px;
+      gap: 3px;
       color: var(--muted);
       font-size: 9px;
       font-weight: 700;
       cursor: pointer;
-      padding: 4px 12px;
-      border-radius: 6px;
+      padding: 6px 14px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
-    .nav-item i { font-size: 16px; }
+    .nav-item i { 
+      font-size: 16px; 
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
 
+    /* FAOL VA BOSILGAN HOLAT (HIGHLIGHT & ANIMATION) */
     .nav-item.active {
       color: var(--accent-dark-green);
-      background: #ecfdf5;
+      background: var(--accent-light-green);
+      border-color: var(--accent-border-green);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
+      animation: scaleBounce 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    .nav-item.active i {
+      transform: scale(1.2);
+    }
+
+    .nav-item:active {
+      transform: scale(0.92);
+    }
+
+    @keyframes scaleBounce {
+      0% { transform: scale(0.88); }
+      50% { transform: scale(1.08); }
+      100% { transform: scale(1); }
     }
 
     /* DESKTOP VA KATTA EKRANLAR UCHUN ADAPTIV MEDIA QUERIES */
@@ -905,7 +993,7 @@
 
       .nav-item {
         font-size: 11px;
-        padding: 6px 18px;
+        padding: 8px 20px;
       }
 
       .nav-item i {
@@ -1013,84 +1101,84 @@
 
       <!-- SENSORLAR GRID -->
       <div class="grid-container">
-        <div class="card">
+        <div class="card" onclick="triggerCardAnimation(this)">
           <div class="title"><i class="fa-solid fa-temperature-three-quarters"></i> Havo harorati</div>
           <div id="temp" class="value">32°C</div>
         </div>
 
-        <div class="card">
+        <div class="card" onclick="triggerCardAnimation(this)">
           <div class="title"><i class="fa-solid fa-droplet"></i> Tuproq namligi</div>
           <div id="soil" class="value">65%</div>
         </div>
 
-        <div class="card">
+        <div class="card" onclick="triggerCardAnimation(this)">
           <div class="title"><i class="fa-solid fa-temperature-low"></i> Tuproq harorati</div>
           <div id="soilTemp" class="value">24°C</div>
         </div>
 
-        <div class="card">
+        <div class="card" onclick="triggerCardAnimation(this)">
           <div class="title"><i class="fa-solid fa-flask"></i> Tuproq pH</div>
           <div id="ph" class="value">6.5</div>
         </div>
 
-        <div class="card">
+        <div class="card" onclick="triggerCardAnimation(this)">
           <div class="title"><i class="fa-solid fa-gauge-high"></i> Atmosfera bosimi</div>
           <div id="pressure" class="value">1012 hPa</div>
         </div>
 
-        <div class="card">
+        <div class="card" onclick="triggerCardAnimation(this)">
           <div class="title"><i class="fa-solid fa-sun"></i> Ob-havo</div>
           <div id="weather" class="value" style="font-size: 1.1rem; padding-top: 4px;">Quyoshli</div>
         </div>
 
-        <div class="card">
+        <div class="card" onclick="triggerCardAnimation(this)">
           <div class="title"><i class="fa-solid fa-water"></i> Hovuzdagi suv</div>
           <div id="water" class="value">78%</div>
         </div>
 
-        <div class="card">
+        <div class="card" onclick="triggerCardAnimation(this)">
           <div class="title"><i class="fa-solid fa-cloud-sun-rain"></i> Havo namligi</div>
           <div id="humidity" class="value">48%</div>
         </div>
 
         <!-- INDIKATORLAR -->
-        <div class="card">
+        <div class="card" onclick="triggerCardAnimation(this)">
           <div class="title"><i class="fa-solid fa-leaf"></i> NDVI (Vegetatsiya)</div>
           <div id="ndvi" class="value-index">0.72</div>
           <div id="ndviStatus" class="status-small good">Yaxshi holat</div>
         </div>
 
-        <div class="card">
+        <div class="card" onclick="triggerCardAnimation(this)">
           <div class="title"><i class="fa-solid fa-tree"></i> GNDVI (Yashil barg)</div>
           <div id="gndvi" class="value-index">0.68</div>
           <div id="gndviStatus" class="status-small good">Normal</div>
         </div>
 
-        <div class="card">
+        <div class="card" onclick="triggerCardAnimation(this)">
           <div class="title"><i class="fa-solid fa-glass-water"></i> NDMI (Namlik indeksi)</div>
           <div id="ndmi" class="value-index">0.38</div>
           <div id="ndmiStatus" class="status-small mid">O'rtacha namlik</div>
         </div>
 
-        <div class="card">
+        <div class="card" onclick="triggerCardAnimation(this)">
           <div class="title"><i class="fa-solid fa-temperature-arrow-up"></i> LST (Yuza harorati)</div>
           <div id="lst" class="value-index">36.4°C</div>
           <div id="lstStatus" class="status-small mid">Issiq</div>
         </div>
 
-        <div class="card">
+        <div class="card" onclick="triggerCardAnimation(this)">
           <div class="title"><i class="fa-solid fa-bolt"></i> Energiya samaradorligi</div>
           <div id="energyEff" class="value-index">0.84</div>
           <div id="energyEffStatus" class="status-small good">Yaxshi</div>
         </div>
 
-        <div class="card">
+        <div class="card" onclick="triggerCardAnimation(this)">
           <div class="title"><i class="fa-solid fa-wind"></i> Bug‘lanish (ET₀)</div>
           <div id="et0" class="value-index" style="font-size: 1.1rem; padding-top:4px;">5.2 mm/k</div>
           <div id="et0Status" class="status-small mid">O'rtacha yuqori</div>
         </div>
 
-        <div class="card" style="grid-column: 1 / -1;">
+        <div class="card" style="grid-column: 1 / -1;" onclick="triggerCardAnimation(this)">
           <div class="title"><i class="fa-solid fa-wheat-awn"></i> Hosil prognozi potentsiali</div>
           <div id="yieldProg" class="value-index">92%</div>
           <div id="yieldProgStatus" class="status-small good">Yuqori potentsial</div>
@@ -1352,7 +1440,7 @@ function enableFullscreen() {
   }
 }
 
-// DISABLE CONTEXT MENU & DEVTOOLS KEYS
+// CONTEXT MENU & DEVTOOLS BLOKLASH
 document.addEventListener('contextmenu', event => event.preventDefault());
 document.addEventListener('keydown', event => {
   if (event.keyCode === 123 || 
@@ -1361,6 +1449,13 @@ document.addEventListener('keydown', event => {
     event.preventDefault();
   }
 });
+
+// CARD ANIMATSIYASI UCHUN
+function triggerCardAnimation(card) {
+  card.classList.remove('active-click');
+  void card.offsetWidth; // Reflow reset
+  card.classList.add('active-click');
+}
 
 // DOM ELEMENTLARI
 const elements = {
