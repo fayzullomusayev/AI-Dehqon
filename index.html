@@ -46,6 +46,8 @@
       --mid: #f59e0b;
       --bad: #ef4444;
       --gold: #d97706;
+      --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.03);
+      --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.06);
     }
 
     * {
@@ -66,31 +68,23 @@
       height: 100dvh;
       background: var(--bg);
       color: var(--text);
-      display: flex;
-      justify-content: center;
-      align-items: center;
       overflow: hidden;
     }
 
-    /* KONTENER (RESPONSIVE STRUCTURE) */
+    /* KONTENER (TO'LIQ MOSLASHUVCHAN STRUCTURE) */
     .app-container {
       width: 100%;
-      max-width: 440px;
       height: 100%;
-      max-height: 880px;
+      height: 100dvh;
       background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 0px;
-      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
       display: flex;
       flex-direction: column;
       position: relative;
       overflow: hidden;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: background 0.3s ease;
     }
 
     :fullscreen .app-container, :-webkit-full-screen .app-container {
-      max-height: 100dvh;
       height: 100dvh;
       border-radius: 0;
       border: none;
@@ -98,12 +92,13 @@
 
     /* HEADER */
     .minimal-header {
-      padding-top: calc(12px + env(safe-area-inset-top));
+      padding-top: calc(10px + env(safe-area-inset-top));
       padding-left: 16px;
       padding-right: 16px;
       padding-bottom: 10px;
       background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
@@ -115,27 +110,32 @@
     .logo-area {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
 
     .logo-icon {
-      width: 32px;
-      height: 32px;
-      background: #ecfdf5;
+      width: 34px;
+      height: 34px;
+      background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
       border: 1px solid #a7f3d0;
-      border-radius: 6px;
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
       color: var(--accent-dark-green);
       font-size: 16px;
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .logo-area:hover .logo-icon {
+      transform: rotate(-8deg) scale(1.08);
     }
 
     .logo-text {
-      font-size: 1.1rem;
+      font-size: 1.12rem;
       font-weight: 800;
       color: var(--text);
-      letter-spacing: -0.3px;
+      letter-spacing: -0.4px;
     }
 
     .logo-text span {
@@ -145,18 +145,18 @@
     .right-area {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
 
     .time-block {
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
       background: #ecfdf5;
       padding: 4px 10px;
-      border-radius: 4px;
+      border-radius: 6px;
       border: 1px solid #a7f3d0;
-      height: 30px;
+      height: 32px;
       font-size: 0.8rem;
       font-weight: 700;
       color: var(--accent-dark-green);
@@ -165,14 +165,35 @@
     .battery-block {
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
       background: #f8fafc;
       padding: 4px 10px;
-      border-radius: 4px;
+      border-radius: 6px;
       border: 1px solid var(--border);
-      height: 30px;
+      height: 32px;
       font-size: 0.8rem;
       font-weight: 700;
+    }
+
+    .fullscreen-btn {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.2s ease;
+    }
+
+    .fullscreen-btn:hover {
+      color: var(--accent-dark-green);
+      border-color: var(--accent-border-green);
+      background: var(--accent-light-green);
     }
 
     .battery-level.good { color: var(--good); }
@@ -182,26 +203,53 @@
     .content-area {
       flex: 1;
       overflow-y: auto;
-      padding: 12px;
-      padding-bottom: calc(75px + env(safe-area-inset-bottom));
+      padding: 14px;
+      padding-bottom: calc(78px + env(safe-area-inset-bottom));
       scroll-behavior: smooth;
     }
 
-    .content-area::-webkit-scrollbar { width: 4px; }
-    .content-area::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+    .content-inner {
+      width: 100%;
+      max-width: 1360px;
+      margin: 0 auto;
+    }
+
+    .content-area::-webkit-scrollbar { width: 5px; }
+    .content-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 6px; }
+    .content-area::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
     /* SCREEN DISPLAY AND ANIMATIONS */
     .screen {
       display: none;
       opacity: 0;
-      transform: translateY(10px) scale(0.98);
-      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transform: translateY(10px);
     }
 
     .screen.active { 
       display: block; 
-      opacity: 1;
-      transform: translateY(0) scale(1);
+      animation: screenFadeIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    @keyframes screenFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes cardFadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
     }
 
     .grid-container {
@@ -213,13 +261,19 @@
     /* AI QAROR MARKAZI */
     .ai-decision-center {
       grid-column: 1 / -1;
-      background: #f0fdf4;
-      border-radius: 8px;
-      padding: 14px;
+      background: linear-gradient(145deg, #f0fdf4 0%, #ecfdf5 100%);
+      border-radius: 12px;
+      padding: 16px;
       border: 1px solid #bbf7d0;
-      margin-bottom: 10px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 12px;
       position: relative;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      overflow: hidden;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .ai-decision-center:hover {
+      box-shadow: var(--shadow-md);
     }
 
     .ai-header {
@@ -232,8 +286,26 @@
     .ai-title {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 9px;
       color: var(--accent-dark-green);
+    }
+
+    .ai-title-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      background: #ffffff;
+      border: 1px solid #a7f3d0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      animation: brainFloat 3s ease-in-out infinite;
+    }
+
+    @keyframes brainFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-2px); }
     }
 
     .ai-title h3 {
@@ -242,30 +314,30 @@
     }
 
     .ai-badge-large {
-      background: #ecfdf5;
+      background: #ffffff;
       padding: 4px 10px;
-      border-radius: 4px;
+      border-radius: 20px;
       border: 1px solid #a7f3d0;
       font-size: 0.75rem;
       font-weight: 700;
       color: var(--accent-dark-green);
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
     }
 
     .pulse-dot-large {
-      width: 6px;
-      height: 6px;
+      width: 7px;
+      height: 7px;
       background: var(--accent-green);
       border-radius: 50%;
-      box-shadow: 0 0 6px var(--accent-green);
-      animation: pulseLarge 1.5s ease-in-out infinite;
+      box-shadow: 0 0 8px var(--accent-green);
+      animation: pulseLarge 1.6s ease-in-out infinite;
     }
 
     @keyframes pulseLarge {
       0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(1.4); }
+      50% { opacity: 0.45; transform: scale(1.45); }
     }
 
     .ai-main {
@@ -277,9 +349,14 @@
 
     .ai-status-card, .ai-prediction-card {
       background: #ffffff;
-      border-radius: 6px;
-      padding: 12px;
+      border-radius: 10px;
+      padding: 14px;
       border: 1px solid var(--border);
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .ai-status-card:hover, .ai-prediction-card:hover {
+      border-color: var(--accent-border-green);
     }
 
     .ai-status-header {
@@ -292,10 +369,15 @@
       margin-bottom: 8px;
     }
 
+    .ai-status-header i {
+      color: var(--accent-dark-green);
+    }
+
     .ai-current-status {
-      font-size: 1.4rem;
+      font-size: 1.35rem;
       font-weight: 800;
       margin-bottom: 6px;
+      letter-spacing: -0.3px;
     }
 
     .ai-current-status.ok { color: var(--accent-dark-green); }
@@ -305,7 +387,7 @@
     .ai-description {
       color: var(--text);
       font-size: 0.85rem;
-      line-height: 1.4;
+      line-height: 1.45;
       margin-bottom: 10px;
       font-weight: 500;
     }
@@ -319,11 +401,19 @@
     .metric-chip {
       background: #ecfdf5;
       padding: 4px 10px;
-      border-radius: 4px;
+      border-radius: 6px;
       border: 1px solid #a7f3d0;
       font-size: 0.75rem;
       font-weight: 600;
       color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .metric-chip i {
+      color: var(--accent-dark-green);
+      font-size: 11px;
     }
 
     .metric-chip span {
@@ -339,12 +429,21 @@
       border-bottom: 1px solid var(--border);
     }
 
-    .prediction-item:last-child { border-bottom: none; }
+    .prediction-item:last-of-type { border-bottom: none; }
 
     .prediction-label {
       color: var(--muted);
       font-size: 0.8rem;
       font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .prediction-label i {
+      width: 14px;
+      text-align: center;
+      font-size: 12px;
     }
 
     .prediction-value {
@@ -360,15 +459,30 @@
       margin-top: 10px;
       height: 6px;
       background: #e2e8f0;
-      border-radius: 3px;
+      border-radius: 4px;
       overflow: hidden;
+      position: relative;
     }
 
     .confidence-fill {
       height: 100%;
-      background: var(--accent-green);
-      border-radius: 3px;
-      transition: width 0.5s ease;
+      background: linear-gradient(90deg, var(--accent-dark-green), var(--accent-green));
+      border-radius: 4px;
+      transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      position: relative;
+    }
+
+    .confidence-fill::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent);
+      animation: shimmerBar 2.2s infinite;
+    }
+
+    @keyframes shimmerBar {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
     }
 
     .confidence-text {
@@ -389,23 +503,32 @@
       background: #ffffff;
       border: 1px solid var(--border);
       color: var(--accent-dark-green);
-      padding: 8px 12px;
-      border-radius: 6px;
-      font-size: 0.8rem;
+      padding: 9px 14px;
+      border-radius: 8px;
+      font-size: 0.82rem;
       font-weight: 700;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     .ai-action-btn:hover {
       background: var(--accent-green);
+      border-color: var(--accent-green);
       color: #ffffff;
       transform: translateY(-2px);
-      box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+    }
+
+    .ai-action-btn:hover i.fa-rotate {
+      transform: rotate(180deg);
+    }
+
+    .ai-action-btn i {
+      transition: transform 0.35s ease;
     }
 
     .ai-action-btn:active {
@@ -415,19 +538,43 @@
     /* INTERAKTIV KARTALAR VA MILTILLASH ANIMATSIYALARI */
     .card {
       background: var(--card);
-      border-radius: 8px;
-      padding: 12px;
+      border-radius: 10px;
+      padding: 13px;
       border: 1px solid var(--border);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+      box-shadow: var(--shadow-sm);
       position: relative;
       cursor: pointer;
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+      animation: cardFadeUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) backwards;
     }
+
+    .card:nth-child(1) { animation-delay: 0.02s; }
+    .card:nth-child(2) { animation-delay: 0.04s; }
+    .card:nth-child(3) { animation-delay: 0.06s; }
+    .card:nth-child(4) { animation-delay: 0.08s; }
+    .card:nth-child(5) { animation-delay: 0.10s; }
+    .card:nth-child(6) { animation-delay: 0.12s; }
+    .card:nth-child(7) { animation-delay: 0.14s; }
+    .card:nth-child(8) { animation-delay: 0.16s; }
+    .card:nth-child(9) { animation-delay: 0.18s; }
+    .card:nth-child(10) { animation-delay: 0.20s; }
+    .card:nth-child(11) { animation-delay: 0.22s; }
+    .card:nth-child(12) { animation-delay: 0.24s; }
+    .card:nth-child(13) { animation-delay: 0.26s; }
+    .card:nth-child(14) { animation-delay: 0.28s; }
+    .card:nth-child(15) { animation-delay: 0.30s; }
 
     .card:hover {
       border-color: var(--accent-border-green);
       background: var(--card-hover);
-      transform: translateY(-2px);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .card:hover .title-icon-badge {
+      background: var(--accent-green);
+      color: #ffffff;
+      transform: scale(1.1) rotate(-5deg);
     }
 
     .card:active, .card.active-click {
@@ -443,7 +590,7 @@
       50% {
         transform: scale(1.02);
         background-color: #d1fae5;
-        box-shadow: 0 0 12px rgba(16, 185, 129, 0.3);
+        box-shadow: 0 0 14px rgba(16, 185, 129, 0.3);
       }
       100% {
         transform: scale(1);
@@ -453,35 +600,55 @@
     .title {
       display: flex;
       align-items: center;
-      gap: 6px;
-      font-size: 0.75rem;
+      gap: 7px;
+      font-size: 0.76rem;
       color: var(--muted);
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       font-weight: 700;
     }
 
-    .title i {
-      font-size: 13px;
+    .title-icon-badge {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: var(--accent-light-green);
+      border: 1px solid var(--accent-border-green);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
       color: var(--accent-dark-green);
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .title i {
+      font-size: 12px;
     }
 
     .value {
       font-size: 1.5rem;
       font-weight: 800;
       color: var(--text);
-      line-height: 1.1;
+      line-height: 1.15;
     }
 
     .value-index {
       font-size: 1.4rem;
       font-weight: 800;
-      line-height: 1.1;
+      line-height: 1.15;
     }
 
     .status-small {
-      font-size: 0.75rem;
+      font-size: 0.74rem;
       font-weight: 700;
-      margin-top: 4px;
+      margin-top: 5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .yield-card {
+      grid-column: 1 / -1;
     }
 
     .ok, .good { color: var(--accent-dark-green); }
@@ -493,12 +660,18 @@
       grid-column: 1 / -1;
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 12px;
+      border-radius: 10px;
+      padding: 14px;
+      box-shadow: var(--shadow-sm);
       display: flex;
       flex-direction: column;
       gap: 8px;
-      margin-top: 10px;
+      margin-top: 4px;
+      transition: border-color 0.25s ease;
+    }
+
+    .risk-bar-card:hover {
+      border-color: var(--accent-border-green);
     }
 
     .risk-title {
@@ -507,33 +680,40 @@
       color: var(--text);
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 7px;
     }
 
     .risk-bar-container {
       height: 14px;
       background: #f1f5f9;
-      border-radius: 4px;
+      border-radius: 6px;
       overflow: hidden;
     }
 
     .risk-bar {
       height: 100%;
       width: 0%;
-      transition: width 1s ease-out;
+      transition: width 1s cubic-bezier(0.22, 1, 0.36, 1);
       background: linear-gradient(to right, #10b981, #f59e0b, #ef4444);
+      position: relative;
     }
 
     .risk-labels {
       display: flex;
       justify-content: space-between;
-      font-size: 0.75rem;
+      font-size: 0.74rem;
       color: var(--muted);
       font-weight: 600;
     }
 
+    .risk-labels span {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
     .risk-value {
-      font-size: 1.2rem;
+      font-size: 1.25rem;
       font-weight: 800;
       text-align: center;
     }
@@ -547,58 +727,74 @@
 
     .chart-card {
       background: var(--card);
-      border-radius: 8px;
-      padding: 12px;
+      border-radius: 10px;
+      padding: 14px;
       border: 1px solid var(--border);
-      transition: all 0.3s ease;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.25s ease;
     }
 
     .chart-card:hover {
       border-color: var(--accent-border-green);
+      box-shadow: var(--shadow-md);
     }
 
     .chart-title {
-      font-size: 0.8rem;
-      color: var(--muted);
-      margin-bottom: 8px;
-      text-align: center;
+      font-size: 0.84rem;
+      color: var(--text);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
       font-weight: 700;
+    }
+
+    .chart-title i {
+      color: var(--accent-dark-green);
     }
 
     .chart-wrapper {
       position: relative;
-      height: 130px;
+      height: 150px;
       width: 100%;
     }
 
     /* XABARLAR */
     .timeline-card-full {
       background: var(--card);
-      border-radius: 8px;
-      padding: 14px;
+      border-radius: 10px;
+      padding: 16px;
       border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
     }
 
     .timeline-full {
       font-size: 0.85rem;
-      max-height: 520px;
+      max-height: calc(100dvh - 190px);
       overflow-y: auto;
+      padding-right: 4px;
     }
+
+    .timeline-full::-webkit-scrollbar { width: 4px; }
+    .timeline-full::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
 
     .timeline-full div {
       margin-bottom: 10px;
-      padding: 10px;
+      padding: 12px;
       background: #f8fafc;
-      border-radius: 6px;
+      border-radius: 8px;
       border-left: 3px solid var(--accent-green);
-      font-size: 0.8rem;
-      line-height: 1.4;
+      font-size: 0.82rem;
+      line-height: 1.45;
       color: var(--text);
       transition: all 0.2s ease;
+      animation: cardFadeUp 0.3s ease backwards;
     }
 
     .timeline-full div:hover {
       background: var(--accent-light-green);
+      transform: translateX(3px);
     }
 
     .timeline-full b { color: var(--accent-dark-green); }
@@ -610,18 +806,25 @@
       gap: 12px;
     }
 
+    .profile-main-col, .profile-side-col {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
     .profile-header {
       background: #ffffff;
-      border-radius: 8px;
-      padding: 16px;
+      border-radius: 10px;
+      padding: 18px;
       text-align: center;
       border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
     }
 
     .profile-avatar {
-      width: 60px;
-      height: 60px;
-      background: #ecfdf5;
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -631,6 +834,11 @@
       font-weight: 800;
       color: var(--accent-dark-green);
       border: 2px solid #a7f3d0;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .profile-header:hover .profile-avatar {
+      transform: scale(1.06);
     }
 
     .profile-name {
@@ -645,16 +853,21 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 4px;
+      gap: 5px;
+      margin-top: 3px;
       margin-bottom: 12px;
       font-weight: 600;
+    }
+
+    .profile-location i {
+      color: var(--accent-dark-green);
     }
 
     .profile-stats {
       display: flex;
       justify-content: space-around;
       border-top: 1px solid var(--border);
-      padding-top: 10px;
+      padding-top: 12px;
     }
 
     .stat-value {
@@ -664,24 +877,25 @@
     }
 
     .stat-label {
-      font-size: 0.7rem;
+      font-size: 0.72rem;
       color: var(--muted);
       font-weight: 600;
     }
 
     .profile-card {
       background: var(--card);
-      border-radius: 8px;
-      padding: 12px;
+      border-radius: 10px;
+      padding: 14px;
       border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
     }
 
     .profile-card-title {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 7px;
       color: var(--accent-dark-green);
-      font-size: 0.85rem;
+      font-size: 0.86rem;
       font-weight: 800;
       margin-bottom: 10px;
     }
@@ -689,20 +903,33 @@
     .info-row {
       display: flex;
       justify-content: space-between;
-      padding: 6px 0;
+      align-items: center;
+      padding: 7px 0;
       border-bottom: 1px solid var(--border);
-      font-size: 0.8rem;
+      font-size: 0.82rem;
     }
 
     .info-row:last-child { border-bottom: none; }
-    .info-label { color: var(--muted); font-weight: 600; }
+    .info-label { 
+      color: var(--muted); 
+      font-weight: 600; 
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .info-label i {
+      width: 14px;
+      text-align: center;
+      color: var(--accent-dark-green);
+      font-size: 12px;
+    }
     .info-value { font-weight: 700; color: var(--text); }
 
     .settings-item {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 8px 0;
+      padding: 9px 0;
       border-bottom: 1px solid var(--border);
     }
 
@@ -711,20 +938,30 @@
     .settings-info {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
 
-    .settings-info i { color: var(--muted); font-size: 14px; }
+    .settings-info i { 
+      color: var(--accent-dark-green); 
+      font-size: 14px; 
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      background: var(--accent-light-green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-    .settings-text h4 { font-size: 0.8rem; font-weight: 700; }
-    .settings-text p { font-size: 0.7rem; color: var(--muted); }
+    .settings-text h4 { font-size: 0.82rem; font-weight: 700; }
+    .settings-text p { font-size: 0.72rem; color: var(--muted); }
 
     /* TOGGLE SWITCH */
     .switch {
       position: relative;
       display: inline-block;
-      width: 38px;
-      height: 20px;
+      width: 40px;
+      height: 22px;
     }
 
     .switch input { opacity: 0; width: 0; height: 0; }
@@ -735,7 +972,7 @@
       top: 0; left: 0; right: 0; bottom: 0;
       background-color: #cbd5e1;
       transition: .3s;
-      border-radius: 10px;
+      border-radius: 11px;
     }
 
     .slider:before {
@@ -743,10 +980,10 @@
       content: "";
       height: 16px;
       width: 16px;
-      left: 2px;
-      bottom: 2px;
+      left: 3px;
+      bottom: 3px;
       background-color: white;
-      transition: .3s;
+      transition: .3s cubic-bezier(0.34, 1.56, 0.64, 1);
       border-radius: 50%;
     }
 
@@ -755,28 +992,33 @@
 
     .profile-actions {
       display: flex;
-      gap: 8px;
-      margin-top: 10px;
+      gap: 10px;
+      margin-top: 4px;
     }
 
     .btn-primary, .btn-secondary {
       flex: 1;
-      padding: 10px;
-      border-radius: 6px;
+      padding: 11px;
+      border-radius: 8px;
       font-weight: 800;
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.22s ease;
     }
 
     .btn-primary {
       background: var(--accent-green);
       color: #ffffff;
       border: none;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-dark-green);
+      transform: translateY(-1px);
     }
 
     .btn-primary:active {
@@ -789,6 +1031,12 @@
       color: var(--muted);
     }
 
+    .btn-secondary:hover {
+      border-color: #fca5a5;
+      color: var(--err);
+      background: #fef2f2;
+    }
+
     .btn-secondary:active {
       transform: scale(0.96);
     }
@@ -798,8 +1046,9 @@
       display: none;
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(15, 23, 42, 0.6);
-      backdrop-filter: blur(4px);
+      background: rgba(15, 23, 42, 0.55);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
       z-index: 2000;
       align-items: center;
       justify-content: center;
@@ -810,70 +1059,88 @@
 
     .modal-content {
       background: var(--card);
-      border-radius: 8px;
-      padding: 16px;
-      max-width: 360px;
+      border-radius: 12px;
+      padding: 18px;
+      max-width: 400px;
       width: 100%;
       border: 1px solid var(--border);
+      box-shadow: 0 20px 40px rgba(15, 23, 42, 0.15);
       animation: modalSlide 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     }
 
     @keyframes modalSlide {
-      from { transform: scale(0.85); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
+      from { transform: scale(0.88) translateY(10px); opacity: 0; }
+      to { transform: scale(1) translateY(0); opacity: 1; }
     }
 
     .modal-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
-    .modal-header h3 { font-size: 1.05rem; color: var(--accent-dark-green); font-weight: 800; }
+    .modal-header h3 { 
+      font-size: 1.05rem; 
+      color: var(--accent-dark-green); 
+      font-weight: 800; 
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
     .close-btn { background: none; border: none; color: var(--muted); font-size: 20px; cursor: pointer; }
 
     .modal-input {
       width: 100%;
-      padding: 8px 10px;
+      padding: 10px 12px;
       background: #f8fafc;
       border: 1px solid var(--border);
-      border-radius: 6px;
+      border-radius: 8px;
       color: var(--text);
       font-size: 0.85rem;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
       outline: none;
       font-weight: 600;
+      transition: border-color 0.2s ease;
+    }
+
+    .modal-input:focus {
+      border-color: var(--accent-green);
+      background: #ffffff;
     }
 
     .modal-footer { display: flex; gap: 8px; margin-top: 10px; }
 
     .modal-btn {
       flex: 1;
-      padding: 8px;
-      border-radius: 6px;
+      padding: 9px;
+      border-radius: 8px;
       font-weight: 700;
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       cursor: pointer;
+      transition: all 0.2s ease;
     }
 
     .modal-btn.save { background: var(--accent-green); color: white; border: none; }
+    .modal-btn.save:hover { background: var(--accent-dark-green); }
     .modal-btn.cancel { background: transparent; border: 1px solid var(--border); color: var(--muted); }
 
     /* BOTTOM NAV VA BOSISH ANIMATSIYALARI */
     .bottom-nav {
       position: absolute;
       bottom: 0;
+      left: 0;
       width: 100%;
-      height: calc(58px + env(safe-area-inset-bottom));
+      height: calc(60px + env(safe-area-inset-bottom));
       padding-bottom: env(safe-area-inset-bottom);
       background: var(--nav-bg);
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border-top: 1px solid var(--nav-border);
       display: flex;
       justify-content: space-around;
       align-items: center;
-      z-index: 999;
+      z-index: 1001;
       flex-shrink: 0;
     }
 
@@ -883,7 +1150,7 @@
       align-items: center;
       gap: 3px;
       color: var(--muted);
-      font-size: 9px;
+      font-size: 10px;
       font-weight: 700;
       cursor: pointer;
       padding: 6px 14px;
@@ -897,17 +1164,22 @@
       transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
+    .nav-item:hover:not(.active) {
+      color: var(--text);
+      background: #f1f5f9;
+    }
+
     /* FAOL VA BOSILGAN HOLAT (HIGHLIGHT & ANIMATION) */
     .nav-item.active {
       color: var(--accent-dark-green);
       background: var(--accent-light-green);
       border-color: var(--accent-border-green);
-      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
+      box-shadow: 0 3px 10px rgba(16, 185, 129, 0.14);
       animation: scaleBounce 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     }
 
     .nav-item.active i {
-      transform: scale(1.2);
+      transform: scale(1.15);
     }
 
     .nav-item:active {
@@ -915,21 +1187,22 @@
     }
 
     @keyframes scaleBounce {
-      0% { transform: scale(0.88); }
-      50% { transform: scale(1.08); }
+      0% { transform: scale(0.9); }
+      50% { transform: scale(1.06); }
       100% { transform: scale(1); }
     }
 
-    /* DESKTOP VA KATTA EKRANLAR UCHUN ADAPTIV MEDIA QUERIES */
-    @media (min-width: 768px) {
-      .app-container {
-        max-width: 780px;
-        max-height: 90vh;
-        border-radius: 12px;
+    /* PLANSHET (TABLET: 600px - 1023px) */
+    @media (min-width: 600px) {
+      .grid-container {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
       }
+    }
 
+    @media (min-width: 768px) {
       .minimal-header {
-        padding: 16px 24px;
+        padding: 14px 24px;
       }
 
       .logo-icon {
@@ -939,23 +1212,18 @@
       }
 
       .logo-text {
-        font-size: 1.35rem;
+        font-size: 1.25rem;
       }
 
       .time-block, .battery-block {
         height: 34px;
-        padding: 6px 14px;
-        font-size: 0.9rem;
+        padding: 6px 12px;
+        font-size: 0.85rem;
       }
 
       .content-area {
-        padding: 20px;
-        padding-bottom: 80px;
-      }
-
-      .grid-container {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 14px;
+        padding: 20px 24px;
+        padding-bottom: 84px;
       }
 
       .ai-main {
@@ -967,24 +1235,25 @@
       }
 
       .title {
-        font-size: 0.85rem;
+        font-size: 0.82rem;
       }
 
       .value {
-        font-size: 1.75rem;
+        font-size: 1.65rem;
       }
 
       .value-index {
-        font-size: 1.6rem;
+        font-size: 1.55rem;
       }
 
       .charts-grid {
-        grid-template-columns: repeat(2, 1fr);
         display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
       }
 
       .chart-wrapper {
-        height: 160px;
+        height: 195px;
       }
 
       .bottom-nav {
@@ -993,17 +1262,112 @@
 
       .nav-item {
         font-size: 11px;
-        padding: 8px 20px;
+        padding: 8px 22px;
       }
 
       .nav-item i {
-        font-size: 18px;
+        font-size: 17px;
       }
     }
 
+    /* DESKTOP (1024px VA UNDAN KATTA EKRANLAR) */
     @media (min-width: 1024px) {
-      .app-container {
-        max-width: 900px;
+      .minimal-header {
+        height: 64px;
+        padding: 0 32px;
+      }
+
+      .fullscreen-btn {
+        display: inline-flex;
+      }
+
+      /* Desktopda navigatsiyani yuqori header markaziga chiroyli ko'chirish */
+      .bottom-nav {
+        position: fixed;
+        top: 12px;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: auto;
+        width: auto;
+        height: 40px;
+        padding: 3px;
+        gap: 4px;
+        background: #f1f5f9;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        box-shadow: none;
+      }
+
+      .nav-item {
+        flex-direction: row;
+        font-size: 0.82rem;
+        padding: 6px 16px;
+        gap: 7px;
+        border-radius: 7px;
+      }
+
+      .nav-item i {
+        font-size: 14px;
+      }
+
+      .nav-item.active {
+        background: #ffffff;
+        border-color: var(--accent-border-green);
+        box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06);
+      }
+
+      .content-area {
+        padding: 24px 32px 32px;
+      }
+
+      .grid-container {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+      }
+
+      /* 15-karta (Hosil prognozi) 4 ustunli setkada qatorni to'liq yopishi uchun */
+      .yield-card {
+        grid-column: span 2;
+      }
+
+      .ai-decision-center {
+        padding: 20px;
+        margin-bottom: 16px;
+      }
+
+      .ai-current-status {
+        font-size: 1.55rem;
+      }
+
+      .chart-wrapper {
+        height: 230px;
+      }
+
+      .timeline-full {
+        max-height: calc(100dvh - 150px);
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+
+      .timeline-full div {
+        margin-bottom: 0;
+      }
+
+      /* Profil sahifasi desktopda 2 ustunli ko'rinishda */
+      .profile-container {
+        display: grid;
+        grid-template-columns: 340px 1fr;
+        gap: 16px;
+        align-items: start;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
       }
     }
   </style>
@@ -1023,7 +1387,7 @@
 
     <div class="right-area">
       <div class="time-block">
-        <i class="fa-solid fa-clock"></i>
+        <i class="fa-regular fa-clock"></i>
         <span id="currentTime">14:30</span>
       </div>
 
@@ -1031,359 +1395,375 @@
         <i class="fa-solid fa-battery-full" id="batteryIcon"></i>
         <span class="battery-level good" id="batteryLevel">96%</span>
       </div>
+
+      <button class="fullscreen-btn" onclick="toggleDesktopFullscreen(event)" title="To'liq ekran">
+        <i class="fa-solid fa-expand" id="fullscreenIcon"></i>
+      </button>
     </div>
   </header>
 
   <!-- SCROLLABLE CONTENT AREA -->
   <div class="content-area">
+    <div class="content-inner">
 
-    <!-- HOME SCREEN -->
-    <div id="home-screen" class="screen active">
-      <div class="ai-decision-center">
-        <div class="ai-header">
-          <div class="ai-title">
-            <i class="fa-solid fa-brain" style="font-size: 18px;"></i>
-            <h3>AI Qaror Markazi</h3>
-          </div>
-          <div class="ai-badge-large">
-            <span class="pulse-dot-large"></span>
-            <span id="aiLiveStatus">Real vaqt</span>
-          </div>
-        </div>
-
-        <div class="ai-main">
-          <div class="ai-status-card">
-            <div class="ai-status-header">
-              <i class="fa-solid fa-chart-line"></i>
-              <span>Joriy holat</span>
+      <!-- HOME SCREEN -->
+      <div id="home-screen" class="screen active">
+        <div class="ai-decision-center">
+          <div class="ai-header">
+            <div class="ai-title">
+              <div class="ai-title-icon">
+                <i class="fa-solid fa-brain"></i>
+              </div>
+              <h3>AI Qaror Markazi</h3>
             </div>
-            <div id="aiCurrentStatus" class="ai-current-status warn">TAHLIL</div>
-            <div id="aiDescription" class="ai-description">Sensorlar ma'lumotlari tahlil qilinmoqda...</div>
-            <div class="ai-metrics">
-              <div class="metric-chip">Ishonchlilik <span id="aiConfidence">92%</span></div>
-              <div class="metric-chip">Sensorlar <span>8/8</span></div>
+            <div class="ai-badge-large">
+              <span class="pulse-dot-large"></span>
+              <span id="aiLiveStatus">Real vaqt</span>
             </div>
           </div>
 
-          <div class="ai-prediction-card">
-            <div class="ai-status-header">
-              <i class="fa-solid fa-compass"></i>
-              <span>24 soatlik prognoz</span>
-            </div>
-            <div class="prediction-item">
-              <span class="prediction-label">Sug'orish ehtimoli</span>
-              <span class="prediction-value good" id="irrigationProb">87%</span>
-            </div>
-            <div class="prediction-item">
-              <span class="prediction-label">Issiqlik stressi</span>
-              <span class="prediction-value warn" id="heatStressProb">34%</span>
-            </div>
-            <div class="prediction-item">
-              <span class="prediction-label">Zararkunanda xavfi</span>
-              <span class="prediction-value bad" id="pestRiskProb">12%</span>
-            </div>
-            <div class="confidence-bar">
-              <div class="confidence-fill" id="confidenceFill" style="width: 92%"></div>
-            </div>
-            <div class="confidence-text" id="confidenceText">AI ishonchliligi: 92%</div>
-          </div>
-        </div>
-
-        <div class="ai-footer">
-          <button class="ai-action-btn" onclick="analyzeNow(); event.stopPropagation();">
-            <i class="fa-solid fa-rotate"></i> Tahlil qilish
-          </button>
-          <button class="ai-action-btn" onclick="showHistory(); event.stopPropagation();">
-            <i class="fa-solid fa-clock-rotate-left"></i> Tarix
-          </button>
-        </div>
-      </div>
-
-      <!-- SENSORLAR GRID -->
-      <div class="grid-container">
-        <div class="card" onclick="triggerCardAnimation(this)">
-          <div class="title"><i class="fa-solid fa-temperature-three-quarters"></i> Havo harorati</div>
-          <div id="temp" class="value">32°C</div>
-        </div>
-
-        <div class="card" onclick="triggerCardAnimation(this)">
-          <div class="title"><i class="fa-solid fa-droplet"></i> Tuproq namligi</div>
-          <div id="soil" class="value">65%</div>
-        </div>
-
-        <div class="card" onclick="triggerCardAnimation(this)">
-          <div class="title"><i class="fa-solid fa-temperature-low"></i> Tuproq harorati</div>
-          <div id="soilTemp" class="value">24°C</div>
-        </div>
-
-        <div class="card" onclick="triggerCardAnimation(this)">
-          <div class="title"><i class="fa-solid fa-flask"></i> Tuproq pH</div>
-          <div id="ph" class="value">6.5</div>
-        </div>
-
-        <div class="card" onclick="triggerCardAnimation(this)">
-          <div class="title"><i class="fa-solid fa-gauge-high"></i> Atmosfera bosimi</div>
-          <div id="pressure" class="value">1012 hPa</div>
-        </div>
-
-        <div class="card" onclick="triggerCardAnimation(this)">
-          <div class="title"><i class="fa-solid fa-sun"></i> Ob-havo</div>
-          <div id="weather" class="value" style="font-size: 1.1rem; padding-top: 4px;">Quyoshli</div>
-        </div>
-
-        <div class="card" onclick="triggerCardAnimation(this)">
-          <div class="title"><i class="fa-solid fa-water"></i> Hovuzdagi suv</div>
-          <div id="water" class="value">78%</div>
-        </div>
-
-        <div class="card" onclick="triggerCardAnimation(this)">
-          <div class="title"><i class="fa-solid fa-cloud-sun-rain"></i> Havo namligi</div>
-          <div id="humidity" class="value">48%</div>
-        </div>
-
-        <!-- INDIKATORLAR -->
-        <div class="card" onclick="triggerCardAnimation(this)">
-          <div class="title"><i class="fa-solid fa-leaf"></i> NDVI (Vegetatsiya)</div>
-          <div id="ndvi" class="value-index">0.72</div>
-          <div id="ndviStatus" class="status-small good">Yaxshi holat</div>
-        </div>
-
-        <div class="card" onclick="triggerCardAnimation(this)">
-          <div class="title"><i class="fa-solid fa-tree"></i> GNDVI (Yashil barg)</div>
-          <div id="gndvi" class="value-index">0.68</div>
-          <div id="gndviStatus" class="status-small good">Normal</div>
-        </div>
-
-        <div class="card" onclick="triggerCardAnimation(this)">
-          <div class="title"><i class="fa-solid fa-glass-water"></i> NDMI (Namlik indeksi)</div>
-          <div id="ndmi" class="value-index">0.38</div>
-          <div id="ndmiStatus" class="status-small mid">O'rtacha namlik</div>
-        </div>
-
-        <div class="card" onclick="triggerCardAnimation(this)">
-          <div class="title"><i class="fa-solid fa-temperature-arrow-up"></i> LST (Yuza harorati)</div>
-          <div id="lst" class="value-index">36.4°C</div>
-          <div id="lstStatus" class="status-small mid">Issiq</div>
-        </div>
-
-        <div class="card" onclick="triggerCardAnimation(this)">
-          <div class="title"><i class="fa-solid fa-bolt"></i> Energiya samaradorligi</div>
-          <div id="energyEff" class="value-index">0.84</div>
-          <div id="energyEffStatus" class="status-small good">Yaxshi</div>
-        </div>
-
-        <div class="card" onclick="triggerCardAnimation(this)">
-          <div class="title"><i class="fa-solid fa-wind"></i> Bug‘lanish (ET₀)</div>
-          <div id="et0" class="value-index" style="font-size: 1.1rem; padding-top:4px;">5.2 mm/k</div>
-          <div id="et0Status" class="status-small mid">O'rtacha yuqori</div>
-        </div>
-
-        <div class="card" style="grid-column: 1 / -1;" onclick="triggerCardAnimation(this)">
-          <div class="title"><i class="fa-solid fa-wheat-awn"></i> Hosil prognozi potentsiali</div>
-          <div id="yieldProg" class="value-index">92%</div>
-          <div id="yieldProgStatus" class="status-small good">Yuqori potentsial</div>
-        </div>
-
-        <!-- RISK BAR -->
-        <div class="risk-bar-card">
-          <div class="risk-title">
-            <i class="fa-solid fa-triangle-exclamation" style="color: var(--warn);"></i>
-            Umumiy Risk Ehtimoli
-          </div>
-          <div class="risk-bar-container">
-            <div id="riskBar" class="risk-bar"></div>
-          </div>
-          <div class="risk-labels">
-            <span>Past (0%)</span>
-            <span>O'rtacha (50%)</span>
-            <span>Yuqori (100%)</span>
-          </div>
-          <div id="riskValue" class="risk-value">42%</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- GRAFIKLAR SCREEN -->
-    <div id="graphs-screen" class="screen">
-      <div class="charts-grid">
-        <div class="chart-card">
-          <div class="chart-title"><i class="fa-solid fa-chart-line"></i> Energiya samaradorligi (7 kun)</div>
-          <div class="chart-wrapper">
-            <canvas id="energyChart"></canvas>
-          </div>
-        </div>
-
-        <div class="chart-card">
-          <div class="chart-title"><i class="fa-solid fa-chart-simple"></i> Issiqlik stress indeksi (%)</div>
-          <div class="chart-wrapper">
-            <canvas id="stressChart"></canvas>
-          </div>
-        </div>
-
-        <div class="chart-card">
-          <div class="chart-title"><i class="fa-solid fa-faucet-drip"></i> Suv tejamkorligi (% tejaldi)</div>
-          <div class="chart-wrapper">
-            <canvas id="waterChart"></canvas>
-          </div>
-        </div>
-
-        <div class="chart-card">
-          <div class="chart-title"><i class="fa-solid fa-seedling"></i> Hosil prognozi (kelajak 10 kun)</div>
-          <div class="chart-wrapper">
-            <canvas id="yieldChart"></canvas>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- XABARLAR SCREEN -->
-    <div id="messages-screen" class="screen">
-      <div class="timeline-card-full">
-        <div class="title" style="margin-bottom: 12px;">
-          <i class="fa-solid fa-list-check"></i> AI XABARLAR ARXIVI
-        </div>
-        <div id="historyTimeline" class="timeline-full"></div>
-      </div>
-    </div>
-
-    <!-- PROFIL SCREEN -->
-    <div id="profile-screen" class="screen">
-      <div class="profile-container">
-        <div class="profile-header">
-          <div class="profile-avatar">F</div>
-          <h1 class="profile-name">Fayzullo Musayev</h1>
-          <div class="profile-location">
-            <i class="fa-solid fa-location-dot"></i> Bandixon tumani, Surxondaryo
-          </div>
-          <div class="profile-stats">
-            <div class="stat-item">
-              <div class="stat-value" id="farmSizeStat">10</div>
-              <div class="stat-label">gektar</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-value" id="cropTypeStat">Bug'doy</div>
-              <div class="stat-label">asosiy ekin</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-value" id="aiScoreStat">92%</div>
-              <div class="stat-label">AI reyting</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="profile-card">
-          <div class="profile-card-title">
-            <i class="fa-solid fa-tractor"></i>
-            <span>Fermer xo'jaligi</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">Xo'jalik nomi</span>
-            <span class="info-value" id="farmName">Bahor shamoli</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">Yer maydoni</span>
-            <span class="info-value" id="farmArea">10 gektar</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">Asosiy ekin</span>
-            <span class="info-value" id="mainCrop">Bug'doy</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">Ro'yxatdan o'tgan</span>
-            <span class="info-value">01.02.2026</span>
-          </div>
-        </div>
-
-        <div class="profile-card">
-          <div class="profile-card-title">
-            <i class="fa-solid fa-id-card"></i>
-            <span>Shaxsiy ma'lumot</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">Telefon</span>
-            <span class="info-value" id="userPhone">+998 20 004 05 09</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">Email</span>
-            <span class="info-value" id="userEmail">fayzullomusayev@outlook.com</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">Til</span>
-            <span class="info-value" id="userLang">O'zbek</span>
-          </div>
-        </div>
-
-        <div class="profile-card">
-          <div class="profile-card-title">
-            <i class="fa-solid fa-sliders"></i>
-            <span>Sozlamalar</span>
-          </div>
-
-          <div class="settings-item">
-            <div class="settings-info">
-              <i class="fa-solid fa-bell"></i>
-              <div class="settings-text">
-                <h4>Bildirishnomalar</h4>
-                <p>Muhim ogohlantirishlar</p>
+          <div class="ai-main">
+            <div class="ai-status-card">
+              <div class="ai-status-header">
+                <i class="fa-solid fa-wave-square"></i>
+                <span>Joriy holat</span>
+              </div>
+              <div id="aiCurrentStatus" class="ai-current-status warn">TAHLIL</div>
+              <div id="aiDescription" class="ai-description">Sensorlar ma'lumotlari tahlil qilinmoqda...</div>
+              <div class="ai-metrics">
+                <div class="metric-chip"><i class="fa-solid fa-shield-halved"></i> Ishonchlilik <span id="aiConfidence">92%</span></div>
+                <div class="metric-chip"><i class="fa-solid fa-microchip"></i> Sensorlar <span>8/8</span></div>
               </div>
             </div>
-            <label class="switch">
-              <input type="checkbox" id="notificationsToggle" checked onchange="saveSettings()">
-              <span class="slider"></span>
-            </label>
+
+            <div class="ai-prediction-card">
+              <div class="ai-status-header">
+                <i class="fa-solid fa-compass"></i>
+                <span>24 soatlik prognoz</span>
+              </div>
+              <div class="prediction-item">
+                <span class="prediction-label"><i class="fa-solid fa-droplet" style="color: var(--good);"></i> Sug'orish ehtimoli</span>
+                <span class="prediction-value good" id="irrigationProb">87%</span>
+              </div>
+              <div class="prediction-item">
+                <span class="prediction-label"><i class="fa-solid fa-temperature-high" style="color: var(--warn);"></i> Issiqlik stressi</span>
+                <span class="prediction-value warn" id="heatStressProb">34%</span>
+              </div>
+              <div class="prediction-item">
+                <span class="prediction-label"><i class="fa-solid fa-bug" style="color: var(--bad);"></i> Zararkunanda xavfi</span>
+                <span class="prediction-value bad" id="pestRiskProb">12%</span>
+              </div>
+              <div class="confidence-bar">
+                <div class="confidence-fill" id="confidenceFill" style="width: 92%"></div>
+              </div>
+              <div class="confidence-text" id="confidenceText">AI ishonchliligi: 92%</div>
+            </div>
           </div>
 
-          <div class="settings-item">
-            <div class="settings-info">
-              <i class="fa-solid fa-faucet"></i>
-              <div class="settings-text">
-                <h4>Avtomatik sug'orish</h4>
-                <p>AI boshqaruvi</p>
-              </div>
-            </div>
-            <label class="switch">
-              <input type="checkbox" id="autoIrrigation" checked onchange="saveSettings()">
-              <span class="slider"></span>
-            </label>
-          </div>
-
-          <div class="settings-item">
-            <div class="settings-info">
-              <i class="fa-solid fa-arrows-rotate"></i>
-              <div class="settings-text">
-                <h4>Sinxronlash</h4>
-                <p>Oxirgi: 5 min oldin</p>
-              </div>
-            </div>
-            <button class="ai-action-btn" style="padding: 4px 10px;" onclick="syncData()">Sinxronlash</button>
-          </div>
-
-          <div class="settings-item">
-            <div class="settings-info">
-              <i class="fa-solid fa-user-pen"></i>
-              <div class="settings-text">
-                <h4>Profilni tahrirlash</h4>
-                <p>Ism, telefon, email</p>
-              </div>
-            </div>
-            <button class="ai-action-btn" style="padding: 4px 10px;" onclick="openEditProfile()">Tahrirlash</button>
+          <div class="ai-footer">
+            <button class="ai-action-btn" onclick="analyzeNow(); event.stopPropagation();">
+              <i class="fa-solid fa-rotate"></i> Tahlil qilish
+            </button>
+            <button class="ai-action-btn" onclick="showHistory(); event.stopPropagation();">
+              <i class="fa-solid fa-clock-rotate-left"></i> Tarix
+            </button>
           </div>
         </div>
 
-        <div class="profile-actions">
-          <button class="btn-primary" onclick="saveAllSettings()">
-            <i class="fa-solid fa-check"></i> Saqlash
-          </button>
-          <button class="btn-secondary" onclick="logout()">
-            <i class="fa-solid fa-right-from-bracket"></i> Chiqish
-          </button>
+        <!-- SENSORLAR GRID -->
+        <div class="grid-container">
+          <div class="card" onclick="triggerCardAnimation(this)">
+            <div class="title"><span class="title-icon-badge"><i class="fa-solid fa-temperature-three-quarters"></i></span> Havo harorati</div>
+            <div id="temp" class="value">32°C</div>
+          </div>
+
+          <div class="card" onclick="triggerCardAnimation(this)">
+            <div class="title"><span class="title-icon-badge"><i class="fa-solid fa-droplet"></i></span> Tuproq namligi</div>
+            <div id="soil" class="value">65%</div>
+          </div>
+
+          <div class="card" onclick="triggerCardAnimation(this)">
+            <div class="title"><span class="title-icon-badge"><i class="fa-solid fa-temperature-low"></i></span> Tuproq harorati</div>
+            <div id="soilTemp" class="value">24°C</div>
+          </div>
+
+          <div class="card" onclick="triggerCardAnimation(this)">
+            <div class="title"><span class="title-icon-badge"><i class="fa-solid fa-flask"></i></span> Tuproq pH</div>
+            <div id="ph" class="value">6.5</div>
+          </div>
+
+          <div class="card" onclick="triggerCardAnimation(this)">
+            <div class="title"><span class="title-icon-badge"><i class="fa-solid fa-gauge-high"></i></span> Atmosfera bosimi</div>
+            <div id="pressure" class="value">1012 hPa</div>
+          </div>
+
+          <div class="card" onclick="triggerCardAnimation(this)">
+            <div class="title"><span class="title-icon-badge"><i class="fa-solid fa-sun"></i></span> Ob-havo</div>
+            <div id="weather" class="value" style="font-size: 1.15rem; padding-top: 4px;">Quyoshli</div>
+          </div>
+
+          <div class="card" onclick="triggerCardAnimation(this)">
+            <div class="title"><span class="title-icon-badge"><i class="fa-solid fa-water"></i></span> Hovuzdagi suv</div>
+            <div id="water" class="value">78%</div>
+          </div>
+
+          <div class="card" onclick="triggerCardAnimation(this)">
+            <div class="title"><span class="title-icon-badge"><i class="fa-solid fa-cloud-sun-rain"></i></span> Havo namligi</div>
+            <div id="humidity" class="value">48%</div>
+          </div>
+
+          <!-- INDIKATORLAR -->
+          <div class="card" onclick="triggerCardAnimation(this)">
+            <div class="title"><span class="title-icon-badge"><i class="fa-solid fa-leaf"></i></span> NDVI (Vegetatsiya)</div>
+            <div id="ndvi" class="value-index">0.72</div>
+            <div id="ndviStatus" class="status-small good"><i class="fa-solid fa-circle-check"></i> Yaxshi holat</div>
+          </div>
+
+          <div class="card" onclick="triggerCardAnimation(this)">
+            <div class="title"><span class="title-icon-badge"><i class="fa-solid fa-tree"></i></span> GNDVI (Yashil barg)</div>
+            <div id="gndvi" class="value-index">0.68</div>
+            <div id="gndviStatus" class="status-small good"><i class="fa-solid fa-circle-check"></i> Normal</div>
+          </div>
+
+          <div class="card" onclick="triggerCardAnimation(this)">
+            <div class="title"><span class="title-icon-badge"><i class="fa-solid fa-glass-water"></i></span> NDMI (Namlik indeksi)</div>
+            <div id="ndmi" class="value-index">0.38</div>
+            <div id="ndmiStatus" class="status-small mid"><i class="fa-solid fa-circle-half-stroke"></i> O'rtacha namlik</div>
+          </div>
+
+          <div class="card" onclick="triggerCardAnimation(this)">
+            <div class="title"><span class="title-icon-badge"><i class="fa-solid fa-temperature-arrow-up"></i></span> LST (Yuza harorati)</div>
+            <div id="lst" class="value-index">36.4°C</div>
+            <div id="lstStatus" class="status-small mid"><i class="fa-solid fa-fire-flame-simple"></i> Issiq</div>
+          </div>
+
+          <div class="card" onclick="triggerCardAnimation(this)">
+            <div class="title"><span class="title-icon-badge"><i class="fa-solid fa-bolt"></i></span> Energiya samaradorligi</div>
+            <div id="energyEff" class="value-index">0.84</div>
+            <div id="energyEffStatus" class="status-small good"><i class="fa-solid fa-circle-check"></i> Yaxshi</div>
+          </div>
+
+          <div class="card" onclick="triggerCardAnimation(this)">
+            <div class="title"><span class="title-icon-badge"><i class="fa-solid fa-wind"></i></span> Bug‘lanish (ET₀)</div>
+            <div id="et0" class="value-index" style="font-size: 1.15rem; padding-top: 4px;">5.2 mm/k</div>
+            <div id="et0Status" class="status-small mid"><i class="fa-solid fa-arrow-trend-up"></i> O'rtacha yuqori</div>
+          </div>
+
+          <div class="card yield-card" onclick="triggerCardAnimation(this)">
+            <div class="title"><span class="title-icon-badge"><i class="fa-solid fa-wheat-awn"></i></span> Hosil prognozi potentsiali</div>
+            <div id="yieldProg" class="value-index">92%</div>
+            <div id="yieldProgStatus" class="status-small good"><i class="fa-solid fa-arrow-up-right-dots"></i> Yuqori potentsial</div>
+          </div>
+
+          <!-- RISK BAR -->
+          <div class="risk-bar-card">
+            <div class="risk-title">
+              <i class="fa-solid fa-triangle-exclamation" style="color: var(--warn);"></i>
+              Umumiy Risk Ehtimoli
+            </div>
+            <div class="risk-bar-container">
+              <div id="riskBar" class="risk-bar"></div>
+            </div>
+            <div class="risk-labels">
+              <span><i class="fa-solid fa-circle-check" style="color: var(--good);"></i> Past (0%)</span>
+              <span><i class="fa-solid fa-circle-exclamation" style="color: var(--warn);"></i> O'rtacha (50%)</span>
+              <span><i class="fa-solid fa-triangle-exclamation" style="color: var(--bad);"></i> Yuqori (100%)</span>
+            </div>
+            <div id="riskValue" class="risk-value">42%</div>
+          </div>
         </div>
       </div>
-    </div>
 
+      <!-- GRAFIKLAR SCREEN -->
+      <div id="graphs-screen" class="screen">
+        <div class="charts-grid">
+          <div class="chart-card">
+            <div class="chart-title"><i class="fa-solid fa-chart-line"></i> Energiya samaradorligi (7 kun)</div>
+            <div class="chart-wrapper">
+              <canvas id="energyChart"></canvas>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-title"><i class="fa-solid fa-chart-simple"></i> Issiqlik stress indeksi (%)</div>
+            <div class="chart-wrapper">
+              <canvas id="stressChart"></canvas>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-title"><i class="fa-solid fa-faucet-drip"></i> Suv tejamkorligi (% tejaldi)</div>
+            <div class="chart-wrapper">
+              <canvas id="waterChart"></canvas>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-title"><i class="fa-solid fa-seedling"></i> Hosil prognozi (kelajak 10 kun)</div>
+            <div class="chart-wrapper">
+              <canvas id="yieldChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- XABARLAR SCREEN -->
+      <div id="messages-screen" class="screen">
+        <div class="timeline-card-full">
+          <div class="title" style="margin-bottom: 12px;">
+            <span class="title-icon-badge"><i class="fa-solid fa-list-check"></i></span> AI XABARLAR ARXIVI
+          </div>
+          <div id="historyTimeline" class="timeline-full"></div>
+        </div>
+      </div>
+
+      <!-- PROFIL SCREEN -->
+      <div id="profile-screen" class="screen">
+        <div class="profile-container">
+          <div class="profile-main-col">
+            <div class="profile-header">
+              <div class="profile-avatar">F</div>
+              <h1 class="profile-name">Fayzullo Musayev</h1>
+              <div class="profile-location">
+                <i class="fa-solid fa-location-dot"></i> Bandixon tumani, Surxondaryo
+              </div>
+              <div class="profile-stats">
+                <div class="stat-item">
+                  <div class="stat-value" id="farmSizeStat">10</div>
+                  <div class="stat-label">gektar</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value" id="cropTypeStat">Bug'doy</div>
+                  <div class="stat-label">asosiy ekin</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value" id="aiScoreStat">92%</div>
+                  <div class="stat-label">AI reyting</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="profile-card">
+              <div class="profile-card-title">
+                <i class="fa-solid fa-tractor"></i>
+                <span>Fermer xo'jaligi</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label"><i class="fa-solid fa-signature"></i> Xo'jalik nomi</span>
+                <span class="info-value" id="farmName">Bahor shamoli</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label"><i class="fa-solid fa-ruler-combined"></i> Yer maydoni</span>
+                <span class="info-value" id="farmArea">10 gektar</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label"><i class="fa-solid fa-wheat-awn"></i> Asosiy ekin</span>
+                <span class="info-value" id="mainCrop">Bug'doy</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label"><i class="fa-regular fa-calendar-check"></i> Ro'yxatdan o'tgan</span>
+                <span class="info-value">01.02.2026</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-side-col">
+            <div class="profile-card">
+              <div class="profile-card-title">
+                <i class="fa-solid fa-id-card"></i>
+                <span>Shaxsiy ma'lumot</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label"><i class="fa-solid fa-phone"></i> Telefon</span>
+                <span class="info-value" id="userPhone">+998 20 004 05 09</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label"><i class="fa-solid fa-envelope"></i> Email</span>
+                <span class="info-value" id="userEmail">fayzullomusayev@outlook.com</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label"><i class="fa-solid fa-globe"></i> Til</span>
+                <span class="info-value" id="userLang">O'zbek</span>
+              </div>
+            </div>
+
+            <div class="profile-card">
+              <div class="profile-card-title">
+                <i class="fa-solid fa-sliders"></i>
+                <span>Sozlamalar</span>
+              </div>
+
+              <div class="settings-item">
+                <div class="settings-info">
+                  <i class="fa-solid fa-bell"></i>
+                  <div class="settings-text">
+                    <h4>Bildirishnomalar</h4>
+                    <p>Muhim ogohlantirishlar</p>
+                  </div>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" id="notificationsToggle" checked onchange="saveSettings()">
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <div class="settings-item">
+                <div class="settings-info">
+                  <i class="fa-solid fa-faucet"></i>
+                  <div class="settings-text">
+                    <h4>Avtomatik sug'orish</h4>
+                    <p>AI boshqaruvi</p>
+                  </div>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" id="autoIrrigation" checked onchange="saveSettings()">
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <div class="settings-item">
+                <div class="settings-info">
+                  <i class="fa-solid fa-arrows-rotate"></i>
+                  <div class="settings-text">
+                    <h4>Sinxronlash</h4>
+                    <p>Oxirgi: 5 min oldin</p>
+                  </div>
+                </div>
+                <button class="ai-action-btn" style="flex: 0 0 auto; padding: 6px 12px;" onclick="syncData()">
+                  <i class="fa-solid fa-cloud-arrow-up"></i> Sinxronlash
+                </button>
+              </div>
+
+              <div class="settings-item">
+                <div class="settings-info">
+                  <i class="fa-solid fa-user-pen"></i>
+                  <div class="settings-text">
+                    <h4>Profilni tahrirlash</h4>
+                    <p>Ism, telefon, email</p>
+                  </div>
+                </div>
+                <button class="ai-action-btn" style="flex: 0 0 auto; padding: 6px 12px;" onclick="openEditProfile()">
+                  <i class="fa-solid fa-pen"></i> Tahrirlash
+                </button>
+              </div>
+            </div>
+
+            <div class="profile-actions">
+              <button class="btn-primary" onclick="saveAllSettings()">
+                <i class="fa-solid fa-check"></i> Saqlash
+              </button>
+              <button class="btn-secondary" onclick="logout()">
+                <i class="fa-solid fa-right-from-bracket"></i> Chiqish
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
 
-  <!-- BOTTOM NAV -->
+  <!-- BOTTOM / DESKTOP TOP NAV -->
   <div class="bottom-nav">
     <div class="nav-item active" data-tab="home">
       <i class="fa-solid fa-house"></i>
@@ -1409,7 +1789,7 @@
 <div id="editProfileModal" class="modal">
   <div class="modal-content">
     <div class="modal-header">
-      <h3>Profilni tahrirlash</h3>
+      <h3><i class="fa-solid fa-user-pen"></i> Profilni tahrirlash</h3>
       <button class="close-btn" onclick="closeModal()">&times;</button>
     </div>
     <div class="modal-body">
@@ -1426,8 +1806,9 @@
 </div>
 
 <script>
-// FULLSCREEN TOGGLE
+// FULLSCREEN TOGGLE (Mobil/planshetda avtomatik, desktopda tugma orqali)
 function enableFullscreen() {
+  if (window.innerWidth >= 1024) return;
   const elem = document.documentElement;
   if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
     if (elem.requestFullscreen) {
@@ -1439,6 +1820,27 @@ function enableFullscreen() {
     }
   }
 }
+
+function toggleDesktopFullscreen(e) {
+  if (e) e.stopPropagation();
+  const elem = document.documentElement;
+  if (!document.fullscreenElement) {
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen().catch(err => console.log(err));
+    }
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen().catch(err => console.log(err));
+    }
+  }
+}
+
+document.addEventListener('fullscreenchange', () => {
+  const icon = document.getElementById('fullscreenIcon');
+  if (icon) {
+    icon.className = document.fullscreenElement ? 'fa-solid fa-compress' : 'fa-solid fa-expand';
+  }
+});
 
 // CONTEXT MENU & DEVTOOLS BLOKLASH
 document.addEventListener('contextmenu', event => event.preventDefault());
@@ -1589,7 +1991,7 @@ function calculateRisk() {
 function addHistoryLog(message) {
   if (!message || !elements.historyTimeline) return;
   const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  const entry = `<div><b>AI</b> ⏱ ${time}<br>${message}</div>`;
+  const entry = `<div><b><i class="fa-solid fa-robot"></i> AI</b> &nbsp;⏱ ${time}<br>${message}</div>`;
   elements.historyTimeline.innerHTML = entry + elements.historyTimeline.innerHTML;
 }
 
@@ -1606,7 +2008,7 @@ function initCharts() {
             data: [0.79, 0.81, 0.84, 0.86, 0.83, 0.85, 0.84],
             borderColor: '#10b981',
             backgroundColor: 'rgba(16, 185, 129, 0.1)',
-            tension: 0.3,
+            tension: 0.35,
             fill: true
           }]
         },
@@ -1628,7 +2030,7 @@ function initCharts() {
           datasets: [{
             data: [12, 28, 19, 35, 22],
             backgroundColor: '#f59e0b',
-            borderRadius: 4
+            borderRadius: 6
           }]
         },
         options: {
@@ -1650,7 +2052,7 @@ function initCharts() {
             data: [18, 24, 31, 27, 35, 29],
             borderColor: '#059669',
             backgroundColor: 'rgba(5, 150, 105, 0.1)',
-            tension: 0.3, fill: true
+            tension: 0.35, fill: true
           }]
         },
         options: {
@@ -1672,7 +2074,7 @@ function initCharts() {
             data: [92, 89, 94, 91, 96, 93],
             borderColor: '#10b981',
             backgroundColor: 'rgba(16, 185, 129, 0.1)',
-            tension: 0.3, fill: true
+            tension: 0.35, fill: true
           }]
         },
         options: {
@@ -1687,7 +2089,8 @@ function initCharts() {
 
 // TAB NAVIGATSIYA
 document.querySelectorAll('.nav-item').forEach(item => {
-  item.addEventListener('click', () => {
+  item.addEventListener('click', (e) => {
+    e.stopPropagation();
     document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
     item.classList.add('active');
 
@@ -1714,7 +2117,7 @@ function addInitialLogs() {
   initialLogs.forEach(logText => {
     const time = logText.substring(0, 5);
     const message = logText.substring(7);
-    const entry = `<div><b>AI</b> ⏱ ${time}<br>${message}</div>`;
+    const entry = `<div><b><i class="fa-solid fa-robot"></i> AI</b> &nbsp;⏱ ${time}<br>${message}</div>`;
     if (elements.historyTimeline) elements.historyTimeline.innerHTML += entry;
   });
 }
